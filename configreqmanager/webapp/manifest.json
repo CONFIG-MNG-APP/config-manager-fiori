@@ -1,0 +1,219 @@
+{
+  "_version": "1.48.0",
+  "sap.app": {
+    "id": "zcapstone.configreqmanager",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.21.0",
+      "toolsId": "4a5a59dc-d2af-46d1-bcd5-1c47c758f4b5"
+    },
+    "dataSources": {
+      "annotation": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotation.xml",
+        "settings": {
+          "localUri": "annotations/annotation.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata4/iwbep/all/srvd/sap/zsd_conf_req/0001/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "annotation"
+          ],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "ConfigReq-manage": {
+          "semanticObject": "ConfigReq",
+          "action": "manage",
+          "title": "{{ConfigReq-manage.flpTitle}}",
+          "subTitle": "{{ConfigReq-manage.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.108.33",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "zcapstone.configreqmanager.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "ZC_CONF_REQ_HList",
+          "target": "ZC_CONF_REQ_HList"
+        },
+        {
+          "pattern": "ZC_CONF_REQ_H({key}):?query:",
+          "name": "ZC_CONF_REQ_HObjectPage",
+          "target": "ZC_CONF_REQ_HObjectPage"
+        },
+        {
+          "pattern": "ZC_CONF_REQ_H({key})/_Items({key2}):?query:",
+          "name": "ZC_CONF_REQ_IObjectPage",
+          "target": "ZC_CONF_REQ_IObjectPage"
+        }
+      ],
+      "targets": {
+        "ZC_CONF_REQ_HList": {
+          "type": "Component",
+          "id": "ZC_CONF_REQ_HList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/ZC_CONF_REQ_H",
+              "variantManagement": "Page",
+              "navigation": {
+                "ZC_CONF_REQ_H": {
+                  "detail": {
+                    "route": "ZC_CONF_REQ_HObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ZC_CONF_REQ_HObjectPage": {
+          "type": "Component",
+          "id": "ZC_CONF_REQ_HObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ZC_CONF_REQ_H",
+              "navigation": {
+                "_Items": {
+                  "detail": {
+                    "route": "ZC_CONF_REQ_IObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "_Items/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "requestAtLeast": [
+                      "ReqId",
+                      "ConfId"
+                    ]
+                  },
+                  "columns": {
+                    "CompareButton": {
+                      "header": "Comparation",
+                      "width": "8rem",
+                      "properties": [
+                        "ReqId",
+                        "ConfId"
+                      ],
+                      "position": {
+                        "anchor": "DataField::Action",
+                        "placement": "After"
+                      },
+                      "template": "zcapstone.configreqmanager.ext.fragment.CompareButton"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ZC_CONF_REQ_IObjectPage": {
+          "type": "Component",
+          "id": "ZC_CONF_REQ_IObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ZC_CONF_REQ_H/_Items"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {
+      "enableLazyLoading": true
+    }
+  }
+}
