@@ -1,22 +1,29 @@
 <edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
-    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
-        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
-    </edmx:Reference>
     <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
         <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
-    </edmx:Reference>
-    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
-        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
     </edmx:Reference>
     <edmx:Reference Uri="/sap/opu/odata4/iwbep/all/srvd/sap/zsd_conf_req/0001/$metadata">
         <edmx:Include Namespace="com.sap.gateway.srvd.zsd_conf_req.v0001" Alias="SAP__self"/>
     </edmx:Reference>
     <edmx:DataServices>
         <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType">
-                <Annotation Term="UI.SelectionVariant" Qualifier="DefaultFilter">
+
+                <!-- ═══ Quick Filter Tab Variants ═══════════════════════════════════ -->
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="All">
                     <Record Type="UI.SelectionVariantType">
-                        <PropertyValue Property="ID" String="DefaultFilter"/>
+                        <PropertyValue Property="ID" String="All"/>
+                        <PropertyValue Property="Text" String="All Requests"/>
+                        <PropertyValue Property="SelectOptions"><Collection/></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="Submitted">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="ID" String="Submitted"/>
+                        <PropertyValue Property="Text" String="Pending Approval"/>
                         <PropertyValue Property="SelectOptions">
                             <Collection>
                                 <Record Type="UI.SelectOptionType">
@@ -35,7 +42,188 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="Approved">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="ID" String="Approved"/>
+                        <PropertyValue Property="Text" String="Approved"/>
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="Status"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="APPROVED"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="Rejected">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="ID" String="Rejected"/>
+                        <PropertyValue Property="Text" String="Rejected"/>
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="Status"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="REJECTED"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ Filter Bar Fields ════════════════════════════════════════════ -->
+
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>ReqTitle</PropertyPath>
+                        <PropertyPath>ModuleId</PropertyPath>
+                        <PropertyPath>EnvId</PropertyPath>
+                        <PropertyPath>Status</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ List Report Table Columns ════════════════════════════════════ -->
+
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Request Title"/>
+                            <PropertyValue Property="Value" Path="ReqTitle"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Module"/>
+                            <PropertyValue Property="Value" Path="ModuleId"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Environment"/>
+                            <PropertyValue Property="Value" Path="EnvId"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Status"/>
+                            <PropertyValue Property="Value" Path="Status"/>
+                            <PropertyValue Property="Criticality" Path="StatusCriticality"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Requested By"/>
+                            <PropertyValue Property="Value" Path="CreatedBy"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Created At"/>
+                            <PropertyValue Property="Value" Path="CreatedAt"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ Object Page Header ════════════════════════════════════════════ -->
+
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Change Request"/>
+                        <PropertyValue Property="TypeNamePlural" String="Change Requests"/>
+                        <PropertyValue Property="ImageUrl" String="sap-icon://task"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Label" String="Request Title"/>
+                                <PropertyValue Property="Value" Path="ReqTitle"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Label" String="Status"/>
+                                <PropertyValue Property="Value" Path="Status"/>
+                                <PropertyValue Property="Criticality" Path="StatusCriticality"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ Object Page Facets ════════════════════════════════════════════ -->
+
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Request Details"/>
+                            <PropertyValue Property="ID" String="RequestInfo"/>
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#REQ"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Configuration Context"/>
+                            <PropertyValue Property="ID" String="ConfigInfo"/>
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#CTX"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Approval Information"/>
+                            <PropertyValue Property="ID" String="AdminInfo"/>
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#ADMIN"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Change Items"/>
+                            <PropertyValue Property="ID" String="Items"/>
+                            <PropertyValue Property="Target" AnnotationPath="_Items/@com.sap.vocabularies.UI.v1.LineItem"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
             </Annotations>
+
+            <!-- ═══ Items Table Columns ══════════════════════════════════════════════ -->
+
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_IType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Configuration Name"/>
+                            <PropertyValue Property="Value" Path="ConfName"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Action"/>
+                            <PropertyValue Property="Value" Path="Action"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Target Environment"/>
+                            <PropertyValue Property="Value" Path="TargetEnvId"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Version"/>
+                            <PropertyValue Property="Value" Path="VersionNo"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Notes"/>
+                            <PropertyValue Property="Value" Path="Notes"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

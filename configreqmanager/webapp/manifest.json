@@ -113,7 +113,11 @@
       }
     },
     "resources": {
-      "css": []
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
     },
     "routing": {
       "config": {},
@@ -143,6 +147,7 @@
             "settings": {
               "contextPath": "/ZC_CONF_REQ_H",
               "variantManagement": "None",
+              "initialLoad": true,
               "navigation": {
                 "ZC_CONF_REQ_H": {
                   "detail": {
@@ -150,22 +155,42 @@
                   }
                 }
               },
+              "views": {
+                "paths": [
+                  {
+                    "key": "All",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#All"
+                  },
+                  {
+                    "key": "Submitted",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Submitted"
+                  },
+                  {
+                    "key": "Approved",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Approved"
+                  },
+                  {
+                    "key": "Rejected",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Rejected"
+                  }
+                ]
+              },
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.SelectionFields": {
                   "filterFields": {
-                    "Status": {
-                      "label": "Status",
+                    "ModuleId": {
+                      "label": "Module",
                       "settings": {
-                        "defaultValues": [
-                          { "value": "SUBMITTED" }
-                        ]
+                        "defaultValues": []
                       }
                     }
                   }
                 },
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "ResponsiveTable"
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Multi",
+                    "requestAtLeast": ["StatusCriticality", "ModuleId"]
                   },
                   "actions": {
                     "NotificationButton": {
@@ -212,22 +237,16 @@
                 },
                 "_Items/@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "requestAtLeast": [
-                      "ReqId",
-                      "ConfId"
-                    ]
+                    "type": "ResponsiveTable",
+                    "requestAtLeast": ["ReqId", "ConfId"]
                   },
                   "columns": {
                     "CompareButton": {
-                      "header": "Comparation",
-                      "width": "8rem",
-                      "properties": [
-                        "ReqId",
-                        "ConfId"
-                      ],
+                      "header": "Compare",
+                      "width": "9rem",
+                      "properties": ["ReqId", "ConfId"],
                       "position": {
-                        "anchor": "DataField::Action",
-                        "placement": "After"
+                        "placement": "End"
                       },
                       "template": "zcapstone.configreqmanager.ext.fragment.CompareButton"
                     }
