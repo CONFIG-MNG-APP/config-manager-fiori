@@ -22,13 +22,10 @@ sap.ui.define([
                 var sModuleId = oParentContext.getProperty("ModuleId");
                 var sReqId = oParentContext.getProperty("ReqId");
 
-                // Request missing properties asynchronously (ConfId, TargetCds)
-                Promise.all([
-                    oParentContext.requestProperty("TargetCds"),
-                    oParentContext.requestProperty("ConfId")
-                ]).then(function(aResults) {
-                    var sTargetCds = aResults[0] || "";
-                    var sConfId = aResults[1];
+                // ConfId thuộc _Items → dùng oBindingContext (item row)
+                // TargetCds không tồn tại trên _Items → dùng ModuleId để route
+                oBindingContext.requestProperty("ConfId").then(function(sConfId) {
+                    var sTargetCds = "";
 
                     console.log("ModuleId:", sModuleId, "TargetCds:", sTargetCds);
                     console.log("ReqId:", sReqId, "ConfId:", sConfId);

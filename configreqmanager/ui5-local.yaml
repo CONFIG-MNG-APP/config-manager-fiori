@@ -26,22 +26,37 @@ server:
       configuration:
         flp:
           theme: sap_horizon
+    - name: sap-fe-mockserver
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_fi_limit_conf/0001
+            metadataPath: ../../configfilimit/configfilimit/webapp/localService/mainService/metadata.xml
+            mockdataPath: ../../configfilimit/configfilimit/webapp/localService/mainService/data
+            generateMockData: true
+            resolveExternalServiceReferences: true
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_sd_price_conf/0001
+            metadataPath: ../../configsdprice/configsdprice/webapp/localService/mainService/metadata.xml
+            mockdataPath: ../../configsdprice/configsdprice/webapp/localService/mainService/data
+            generateMockData: true
+            resolveExternalServiceReferences: true
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_mm_route_conf/0001
+            metadataPath: ../../configmmroute/configmmroute/webapp/localService/mainService/metadata.xml
+            mockdataPath: ../../configmmroute/configmmroute/webapp/localService/mainService/data
+            generateMockData: true
+            resolveExternalServiceReferences: true
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_mm_safe_stock/0001
+            metadataPath: ../../configmmsafestock/configmmsafestock/webapp/localService/mainService/metadata.xml
+            mockdataPath: ../../configmmsafestock/configmmsafestock/webapp/localService/mainService/data
+            generateMockData: true
+            resolveExternalServiceReferences: true
+        annotations: []
     - name: fiori-tools-proxy
-      afterMiddleware: compression
+      afterMiddleware: sap-fe-mockserver
       configuration:
         ignoreCertErrors: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
         backend:
           - path: /sap
             url: https://s40lp1.ucc.cit.tum.de
             client: '324'
-    - name: sap-fe-mockserver
-      beforeMiddleware: csp
-      configuration:
-        mountPath: /
-        services:
-          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_conf_req/0001
-            metadataPath: ./webapp/localService/mainService/metadata.xml
-            mockdataPath: ./webapp/localService/mainService/data
-            generateMockData: true
-            resolveExternalServiceReferences: true
-        annotations: []

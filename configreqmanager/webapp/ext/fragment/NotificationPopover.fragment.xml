@@ -1,0 +1,47 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <ResponsivePopover
+        id="notificationPopover"
+        title="Thông báo ({notification>/unreadCount} chưa đọc)"
+        placement="Bottom"
+        contentWidth="400px"
+        contentHeight="380px">
+
+        <content>
+            <List
+                id="notifList"
+                items="{notification>/notifications}"
+                noDataText="Không có thông báo mới"
+                mode="None">
+
+                <StandardListItem
+                    title="{notification>title}"
+                    description="{notification>description}"
+                    info="{notification>timeDisplay}"
+                    infoState="Warning"
+                    type="Active"
+                    highlight="{= ${notification>read} ? 'None' : 'Information' }"
+                    press=".onNotificationItemPress"/>
+
+            </List>
+        </content>
+
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button
+                    text="Đánh dấu tất cả đã đọc"
+                    type="Transparent"
+                    press=".onMarkAllRead"/>
+                <Button
+                    text="Xóa tất cả"
+                    type="Transparent"
+                    press=".onClearAll"/>
+            </OverflowToolbar>
+        </footer>
+
+    </ResponsivePopover>
+
+</core:FragmentDefinition>

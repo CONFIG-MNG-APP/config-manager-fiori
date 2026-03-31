@@ -43,7 +43,15 @@
           "title": "{{ConfigReq-manage.flpTitle}}",
           "subTitle": "{{ConfigReq-manage.flpSubtitle}}",
           "signature": {
-            "parameters": {},
+            "parameters": {
+              "ReqId": {
+                "required": false,
+                "defaultValue": {
+                  "value": "",
+                  "format": "plain"
+                }
+              }
+            },
             "additionalParameters": "allowed"
           }
         }
@@ -84,7 +92,9 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "zcapstone.configreqmanager.i18n.i18n"
+          "bundleName": "zcapstone.configreqmanager.i18n.i18n",
+          "supportedLocales": [""],
+          "fallbackLocale": ""
         }
       },
       "": {
@@ -132,7 +142,7 @@
           "options": {
             "settings": {
               "contextPath": "/ZC_CONF_REQ_H",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "navigation": {
                 "ZC_CONF_REQ_H": {
                   "detail": {
@@ -141,9 +151,31 @@
                 }
               },
               "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                  "filterFields": {
+                    "Status": {
+                      "label": "Status",
+                      "settings": {
+                        "defaultValues": [
+                          { "value": "SUBMITTED" }
+                        ]
+                      }
+                    }
+                  }
+                },
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "ResponsiveTable"
+                  },
+                  "actions": {
+                    "NotificationButton": {
+                      "press": "zcapstone.configreqmanager.ext.fragment.NotificationButton.onNotificationPress",
+                      "text": "Thông báo",
+                      "icon": "sap-icon://bell",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": false
+                    }
                   }
                 }
               }
