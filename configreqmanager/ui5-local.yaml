@@ -51,6 +51,11 @@ server:
             mockdataPath: ../../configmmsafestock/configmmsafestock/webapp/localService/mainService/data
             generateMockData: true
             resolveExternalServiceReferences: true
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_audit_log/0001
+            metadataPath: ../../audittrail/audittrailformanager/webapp/localService/mainService/metadata.xml
+            mockdataPath: ../../audittrail/audittrailformanager/webapp/localService/mainService/data
+            generateMockData: true
+            resolveExternalServiceReferences: true
         annotations: []
     - name: fiori-tools-proxy
       afterMiddleware: sap-fe-mockserver

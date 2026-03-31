@@ -198,6 +198,18 @@
                 }
               },
               "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.Identification": {
+                  "actions": {
+                    "AuditTrailButton": {
+                      "press": "zcapstone.configreqmanager.ext.fragment.AuditTrailButton.onAuditTrailPress",
+                      "text": "Audit Trail",
+                      "icon": "sap-icon://history",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": false
+                    }
+                  }
+                },
                 "_Items/@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "requestAtLeast": [
