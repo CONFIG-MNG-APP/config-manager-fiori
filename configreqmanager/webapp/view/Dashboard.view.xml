@@ -1,0 +1,246 @@
+<mvc:View
+    controllerName="zcapstone.configreqmanager.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:vizData="sap.viz.ui5.data"
+    xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:micro="sap.suite.ui.microchart"
+    displayBlock="true">
+
+    <f:DynamicPage id="dashboardPage" toggleHeaderOnTitleClick="false" fitContent="true" class="dashPage">
+
+        <!-- ── Page Header ─────────────────────────────────────────────────── -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <VBox class="dashHeaderBox">
+                        <Title text="Request Dashboard" level="H2" class="dashPageTitle"/>
+                        <Text text="Updated: {dashboard>/lastUpdated}" class="dashPageSubtitle"/>
+                    </VBox>
+                </f:heading>
+                <f:navigationActions>
+                    <Button icon="sap-icon://nav-back" tooltip="Back to Request List" press="onNavToList" type="Transparent"/>
+                </f:navigationActions>
+                <f:actions>
+                    <Button text="Refresh" icon="sap-icon://refresh" press="onRefresh" type="Transparent"/>
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- ── Page Content ────────────────────────────────────────────────── -->
+        <f:content>
+            <VBox class="dashContainer">
+
+                <!-- ─ Section 1: KPI Tiles ─────────────────────────────────── -->
+                <VBox class="dashSection">
+                    <Title text="Performance Overview" level="H4" class="dashSectionTitle"/>
+
+                    <!-- Skeleton shimmer — visible while data is loading -->
+                    <HBox wrap="Wrap" class="dashKpiRow" visible="{dashboard>/loading}">
+                        <VBox id="skeletonTile1" class="crSkeletonTile sapUiTinyMarginBeginEnd"/>
+                        <VBox id="skeletonTile2" class="crSkeletonTile sapUiTinyMarginBeginEnd"/>
+                        <VBox id="skeletonTile3" class="crSkeletonTile sapUiTinyMarginBeginEnd"/>
+                        <VBox id="skeletonTile4" class="crSkeletonTile sapUiTinyMarginBeginEnd"/>
+                    </HBox>
+
+                    <!-- Actual tiles — hidden while loading -->
+                    <HBox wrap="Wrap" class="dashKpiRow" visible="{= !${dashboard>/loading} }">
+
+                        <!-- Pending: highest urgency — shown first for manager -->
+                        <GenericTile
+                            class="dashKpiTile dashKpiPending sapUiTinyMarginBeginEnd"
+                            header="Pending Approval"
+                            subheader="{= ${dashboard>/kpi/pending} + ' awaiting review'}"
+                            sizeBehavior="Responsive"
+                            frameType="TwoByOne"
+                            press="onKpiPress">
+                            <tileContent>
+                                <TileContent footer="% of total">
+                                    <content>
+                                        <micro:RadialMicroChart
+                                            id="kpiPendingRadial"
+                                            size="Auto"
+                                            fraction="{dashboard>/kpi/pending}"
+                                            total="{dashboard>/kpi/total}"
+                                            valueColor="Critical"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+
+                        <!-- Total: baseline reference -->
+                        <GenericTile
+                            class="dashKpiTile sapUiTinyMarginBeginEnd"
+                            header="Total Requests"
+                            subheader="All active"
+                            sizeBehavior="Responsive"
+                            frameType="TwoByOne"
+                            press="onKpiPress">
+                            <tileContent>
+                                <TileContent>
+                                    <content>
+                                        <NumericContent
+                                            value="{dashboard>/kpi/total}"
+                                            scale=""
+                                            valueColor="Neutral"
+                                            icon="sap-icon://business-objects-experience"
+                                            withMargin="false"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+
+                        <!-- Approved: RadialMicroChart shows % of total -->
+                        <GenericTile
+                            class="dashKpiTile dashKpiApproved sapUiTinyMarginBeginEnd"
+                            header="Approved"
+                            subheader="{= ${dashboard>/kpi/approved} + ' requests'}"
+                            sizeBehavior="Responsive"
+                            frameType="TwoByOne"
+                            press="onKpiPress">
+                            <tileContent>
+                                <TileContent footer="% of total">
+                                    <content>
+                                        <micro:RadialMicroChart
+                                            id="kpiApprovedRadial"
+                                            size="Auto"
+                                            fraction="{dashboard>/kpi/approved}"
+                                            total="{dashboard>/kpi/total}"
+                                            valueColor="Good"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+
+                        <!-- Rejected: RadialMicroChart shows % of total -->
+                        <GenericTile
+                            class="dashKpiTile dashKpiRejected sapUiTinyMarginBeginEnd"
+                            header="Rejected"
+                            subheader="{= ${dashboard>/kpi/rejected} + ' requests'}"
+                            sizeBehavior="Responsive"
+                            frameType="TwoByOne"
+                            press="onKpiPress">
+                            <tileContent>
+                                <TileContent footer="% of total">
+                                    <content>
+                                        <micro:RadialMicroChart
+                                            id="kpiRejectedRadial"
+                                            size="Auto"
+                                            fraction="{dashboard>/kpi/rejected}"
+                                            total="{dashboard>/kpi/total}"
+                                            valueColor="Error"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+
+                    </HBox>
+                </VBox>
+
+                <!-- ─ Section 2: Charts ─────────────────────────────────────── -->
+                <VBox class="dashSection">
+                    <Title text="Analytics" level="H4" class="dashSectionTitle"/>
+                    <HBox wrap="Wrap" class="dashChartRow" alignItems="Stretch">
+
+                        <!-- Status Distribution Donut -->
+                        <VBox class="dashChartCard" width="50%">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashChartCardHeader">
+                                <Title text="Status Distribution" level="H5"/>
+                                <ObjectStatus text="Live" state="Success" icon="sap-icon://circle-task-2"/>
+                            </HBox>
+                            <viz:VizFrame
+                                id="statusDonutChart"
+                                vizType="donut"
+                                height="280px"
+                                width="100%"
+                                uiConfig="{applicationSet: 'fiori'}">
+                                <viz:dataset>
+                                    <vizData:FlattenedDataset data="{dashboard>/statusData}">
+                                        <vizData:dimensions>
+                                            <vizData:DimensionDefinition name="Status" value="{dashboard>status}"/>
+                                        </vizData:dimensions>
+                                        <vizData:measures>
+                                            <vizData:MeasureDefinition name="Count" value="{dashboard>count}"/>
+                                        </vizData:measures>
+                                    </vizData:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <vizFeeds:FeedItem uid="color" type="Dimension" values="['Status']"/>
+                                    <vizFeeds:FeedItem uid="size" type="Measure" values="['Count']"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </VBox>
+
+                        <!-- Module Breakdown Column Chart -->
+                        <VBox class="dashChartCard" width="50%">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashChartCardHeader">
+                                <Title text="Requests by Module" level="H5"/>
+                                <ObjectStatus text="Live" state="Success" icon="sap-icon://circle-task-2"/>
+                            </HBox>
+                            <viz:VizFrame
+                                id="moduleColumnChart"
+                                vizType="column"
+                                height="280px"
+                                width="100%"
+                                uiConfig="{applicationSet: 'fiori'}">
+                                <viz:dataset>
+                                    <vizData:FlattenedDataset data="{dashboard>/moduleData}">
+                                        <vizData:dimensions>
+                                            <vizData:DimensionDefinition name="Module" value="{dashboard>module}"/>
+                                        </vizData:dimensions>
+                                        <vizData:measures>
+                                            <vizData:MeasureDefinition name="Count" value="{dashboard>count}"/>
+                                        </vizData:measures>
+                                    </vizData:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <vizFeeds:FeedItem uid="categoryAxis" type="Dimension" values="['Module']"/>
+                                    <vizFeeds:FeedItem uid="valueAxis" type="Measure" values="['Count']"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </VBox>
+
+                    </HBox>
+                </VBox>
+
+                <!-- ─ Section 3: Recent Pending Approvals ─────────────────── -->
+                <VBox class="dashSection dashRecentSection">
+                    <HBox justifyContent="SpaceBetween" alignItems="Center">
+                        <Title text="Recent Pending Approvals" level="H4" class="dashSectionTitle sapUiNoMarginBottom"/>
+                        <Link text="View All Requests →" press="onNavToList" class="dashViewAllLink"/>
+                    </HBox>
+                    <Table
+                        id="recentTable"
+                        items="{dashboard>/recentRequests}"
+                        noDataText="No pending requests at this time"
+                        alternateRowColors="true"
+                        sticky="ColumnHeaders"
+                        class="dashRecentTable">
+                        <columns>
+                            <Column width="35%"><Text text="Request Title"/></Column>
+                            <Column width="10%"><Text text="Module"/></Column>
+                            <Column width="10%"><Text text="Environment"/></Column>
+                            <Column width="20%"><Text text="Requested By"/></Column>
+                            <Column width="25%"><Text text="Submitted At"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem type="Active" press="onRequestPress">
+                                <cells>
+                                    <Text text="{dashboard>ReqTitle}" maxLines="1"/>
+                                    <ObjectStatus text="{dashboard>ModuleId}" state="Information" class="dashModuleBadge"/>
+                                    <ObjectStatus text="{dashboard>EnvId}" state="None"/>
+                                    <Text text="{dashboard>CreatedBy}"/>
+                                    <Text text="{path: 'dashboard>CreatedAt', formatter: '.formatDateTime'}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+
+</mvc:View>

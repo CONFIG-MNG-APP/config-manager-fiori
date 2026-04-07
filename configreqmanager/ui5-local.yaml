@@ -26,11 +26,37 @@ server:
       configuration:
         flp:
           theme: sap_horizon
+          apps:
+            - target: /configmmroute
+              local: ../../configmmroute/configmmroute
+              intent:
+                object: MMRoute
+                action: review
+            - target: /configfilimit
+              local: ../../configfilimit/configfilimit
+              intent:
+                object: FILimit
+                action: review
+            - target: /configsdprice
+              local: ../../configsdprice/configsdprice
+              intent:
+                object: SDPrice
+                action: review
+            - target: /configmmsafestock
+              local: ../../configmmsafestock/configmmsafestock
+              intent:
+                object: MMSafeStock
+                action: review
     - name: sap-fe-mockserver
       afterMiddleware: fiori-tools-appreload
       configuration:
         mountPath: /
         services:
+          - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_conf_req/0001
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+            resolveExternalServiceReferences: true
           - urlPath: /sap/opu/odata4/iwbep/all/srvd/sap/zsd_fi_limit_conf/0001
             metadataPath: ../../configfilimit/configfilimit/webapp/localService/mainService/metadata.xml
             mockdataPath: ../../configfilimit/configfilimit/webapp/localService/mainService/data

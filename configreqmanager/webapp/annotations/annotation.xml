@@ -2,6 +2,9 @@
     <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
         <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
     </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
     <edmx:Reference Uri="/sap/opu/odata4/iwbep/all/srvd/sap/zsd_conf_req/0001/$metadata">
         <edmx:Include Namespace="com.sap.gateway.srvd.zsd_conf_req.v0001" Alias="SAP__self"/>
     </edmx:Reference>
@@ -89,18 +92,44 @@
                     </Record>
                 </Annotation>
 
+                <Annotation Term="UI.SelectionVariant" Qualifier="Draft">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="ID" String="Draft"/>
+                        <PropertyValue Property="Text" String="My Drafts"/>
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="IsActiveEntity"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" Bool="false"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
                 <!-- ═══ Filter Bar Fields ════════════════════════════════════════════ -->
+                <!-- Status first — manager's primary filter; Module/Env next for scope -->
 
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
-                        <PropertyPath>ReqTitle</PropertyPath>
+                        <PropertyPath>Status</PropertyPath>
                         <PropertyPath>ModuleId</PropertyPath>
                         <PropertyPath>EnvId</PropertyPath>
-                        <PropertyPath>Status</PropertyPath>
+                        <PropertyPath>ReqTitle</PropertyPath>
+                        <PropertyPath>CreatedBy</PropertyPath>
                     </Collection>
                 </Annotation>
 
                 <!-- ═══ List Report Table Columns ════════════════════════════════════ -->
+                <!-- Description removed — redundant noise for manager review workflow  -->
 
                 <Annotation Term="UI.LineItem">
                     <Collection>
@@ -110,30 +139,41 @@
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Module"/>
-                            <PropertyValue Property="Value" Path="ModuleId"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Environment"/>
-                            <PropertyValue Property="Value" Path="EnvId"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Status"/>
-                            <PropertyValue Property="Value" Path="Status"/>
-                            <PropertyValue Property="Criticality" Path="StatusCriticality"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Requested By"/>
                             <PropertyValue Property="Value" Path="CreatedBy"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Created At"/>
+                            <PropertyValue Property="Label" String="Submitted At"/>
                             <PropertyValue Property="Value" Path="CreatedAt"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataFieldForAction">
+                            <PropertyValue Property="Action" String="com.sap.gateway.srvd.zsd_conf_req.v0001.approve"/>
+                            <PropertyValue Property="Label" String="Approve"/>
+                            <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/ChangeSet"/>
+                        </Record>
+                        <Record Type="UI.DataFieldForAction">
+                            <PropertyValue Property="Action" String="com.sap.gateway.srvd.zsd_conf_req.v0001.reject"/>
+                            <PropertyValue Property="Label" String="Reject"/>
+                            <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/ChangeSet"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ Object Page Header Actions ═══════════════════════════════════ -->
+
+                <Annotation Term="UI.Identification">
+                    <Collection>
+                        <Record Type="UI.DataFieldForAction">
+                            <PropertyValue Property="Action" String="com.sap.gateway.srvd.zsd_conf_req.v0001.approve"/>
+                            <PropertyValue Property="Label" String="Approve"/>
+                            <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/ChangeSet"/>
+                        </Record>
+                        <Record Type="UI.DataFieldForAction">
+                            <PropertyValue Property="Action" String="com.sap.gateway.srvd.zsd_conf_req.v0001.reject"/>
+                            <PropertyValue Property="Label" String="Reject"/>
+                            <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/ChangeSet"/>
                         </Record>
                     </Collection>
                 </Annotation>
@@ -144,7 +184,7 @@
                     <Record>
                         <PropertyValue Property="TypeName" String="Change Request"/>
                         <PropertyValue Property="TypeNamePlural" String="Change Requests"/>
-                        <PropertyValue Property="ImageUrl" String="sap-icon://task"/>
+                        <PropertyValue Property="ImageUrl" String="sap-icon://approvals"/>
                         <PropertyValue Property="Title">
                             <Record Type="UI.DataField">
                                 <PropertyValue Property="Label" String="Request Title"/>
@@ -153,15 +193,141 @@
                         </PropertyValue>
                         <PropertyValue Property="Description">
                             <Record Type="UI.DataField">
-                                <PropertyValue Property="Label" String="Status"/>
-                                <PropertyValue Property="Value" Path="Status"/>
-                                <PropertyValue Property="Criticality" Path="StatusCriticality"/>
+                                <PropertyValue Property="Label" String="{@i18n>colRequestedBy}"/>
+                                <PropertyValue Property="Value" Path="CreatedBy"/>
                             </Record>
                         </PropertyValue>
                     </Record>
                 </Annotation>
 
-                <!-- ═══ Object Page Facets ════════════════════════════════════════════ -->
+                <!-- ═══ Object Page Header Facets (KPI Badges) ═══════════════════════ -->
+
+                <Annotation Term="UI.DataPoint" Qualifier="StatusDP">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Title" String="{@i18n>colStatus}"/>
+                        <PropertyValue Property="Value" Path="Status"/>
+                        <PropertyValue Property="Criticality" Path="StatusCriticality"/>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.DataPoint" Qualifier="ModuleDP">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Title" String="{@i18n>colModule}"/>
+                        <PropertyValue Property="Value" Path="ModuleId"/>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.DataPoint" Qualifier="EnvDP">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Title" String="{@i18n>colEnvironment}"/>
+                        <PropertyValue Property="Value" Path="EnvId"/>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.HeaderFacets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.DataPoint#StatusDP"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.DataPoint#ModuleDP"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.DataPoint#EnvDP"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ Object Page Field Groups ══════════════════════════════════════ -->
+
+                <!-- Request Details: title, description, submitter info — no redundant Status/Reason -->
+                <Annotation Term="UI.FieldGroup" Qualifier="REQ">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="Request Details"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colRequestTitle}"/>
+                                    <PropertyValue Property="Value" Path="ReqTitle"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colDescription}"/>
+                                    <PropertyValue Property="Value" Path="Description"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colRequestedBy}"/>
+                                    <PropertyValue Property="Value" Path="CreatedBy"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colCreatedAt}"/>
+                                    <PropertyValue Property="Value" Path="CreatedAt"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Configuration Context: scope of the change -->
+                <Annotation Term="UI.FieldGroup" Qualifier="CTX">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="Configuration Context"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colModule}"/>
+                                    <PropertyValue Property="Value" Path="ModuleId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colEnvironment}"/>
+                                    <PropertyValue Property="Value" Path="EnvId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Configuration Name"/>
+                                    <PropertyValue Property="Value" Path="ConfName"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Approval Decision: status + outcome fields -->
+                <Annotation Term="UI.FieldGroup" Qualifier="DECISION">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="{@i18n>fgApprovalDecision}"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>colStatus}"/>
+                                    <PropertyValue Property="Value" Path="Status"/>
+                                    <PropertyValue Property="Criticality" Path="StatusCriticality"/>
+                                    <PropertyValue Property="CriticalityRepresentation" EnumMember="UI.CriticalityRepresentationType/WithIcon"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>fieldRejectionReason}"/>
+                                    <PropertyValue Property="Value" Path="Reason"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Approved By"/>
+                                    <PropertyValue Property="Value" Path="ApprovedBy"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Approved At"/>
+                                    <PropertyValue Property="Value" Path="ApprovedAt"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Rejected By"/>
+                                    <PropertyValue Property="Value" Path="RejectedBy"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Rejected At"/>
+                                    <PropertyValue Property="Value" Path="RejectedAt"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ Object Page Facets (4 tabs, no redundancy) ════════════════════ -->
 
                 <Annotation Term="UI.Facets">
                     <Collection>
@@ -176,9 +342,9 @@
                             <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#CTX"/>
                         </Record>
                         <Record Type="UI.ReferenceFacet">
-                            <PropertyValue Property="Label" String="Approval Information"/>
-                            <PropertyValue Property="ID" String="AdminInfo"/>
-                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#ADMIN"/>
+                            <PropertyValue Property="Label" String="{@i18n>fgApprovalDecision}"/>
+                            <PropertyValue Property="ID" String="DecisionInfo"/>
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#DECISION"/>
                         </Record>
                         <Record Type="UI.ReferenceFacet">
                             <PropertyValue Property="Label" String="Change Items"/>
@@ -222,6 +388,30 @@
                         </Record>
                     </Collection>
                 </Annotation>
+            </Annotations>
+
+            <!-- ═══ Property-level label overrides (fix backend metadata labels) ════ -->
+
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/ReqTitle">
+                <Annotation Term="Common.Label" String="{@i18n>colRequestTitle}"/>
+            </Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/ModuleId">
+                <Annotation Term="Common.Label" String="{@i18n>colModule}"/>
+            </Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/EnvId">
+                <Annotation Term="Common.Label" String="{@i18n>colEnvironment}"/>
+            </Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/Status">
+                <Annotation Term="Common.Label" String="{@i18n>colStatus}"/>
+            </Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/CreatedBy">
+                <Annotation Term="Common.Label" String="{@i18n>colRequestedBy}"/>
+            </Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/CreatedAt">
+                <Annotation Term="Common.Label" String="{@i18n>colCreatedAt}"/>
+            </Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/Description">
+                <Annotation Term="Common.Label" String="{@i18n>colDescription}"/>
             </Annotations>
 
         </Schema>

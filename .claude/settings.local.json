@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/SAP Capstone/configfilimit/configfilimit/webapp/annotations/**)",
+      "Read(//d/SAP Capstone/configfilimit/configfilimit/webapp/**)"
+    ]
+  }
+}

@@ -17,6 +17,7 @@
                 mode="None">
 
                 <StandardListItem
+                    id="notifListItem"
                     title="{notification>title}"
                     description="{notification>description}"
                     info="{notification>timeDisplay}"
@@ -28,19 +29,20 @@
             </List>
         </content>
 
-        <footer>
-            <OverflowToolbar>
-                <ToolbarSpacer/>
-                <Button
-                    text="Đánh dấu tất cả đã đọc"
-                    type="Transparent"
-                    press=".onMarkAllRead"/>
-                <Button
-                    text="Xóa tất cả"
-                    type="Transparent"
-                    press=".onClearAll"/>
-            </OverflowToolbar>
-        </footer>
+        <beginButton>
+            <Button
+                id="clearAllNotifsBtn"
+                text="Xóa tất cả"
+                type="Transparent"
+                press=".onClearAll"/>
+        </beginButton>
+        <endButton>
+            <Button
+                id="markAllReadNotifsBtn"
+                text="Đánh dấu tất cả đã đọc"
+                type="Transparent"
+                press=".onMarkAllRead"/>
+        </endButton>
 
     </ResponsivePopover>
 

@@ -3,19 +3,17 @@ sap.ui.define([
     "sap/ui/core/Element",
     "sap/ui/core/Component",
     "sap/m/BadgeCustomData",
-    "sap/m/Dialog",
-    "sap/m/List",
-    "sap/m/StandardListItem",
-    "sap/m/Button"
-], function (JSONModel, Element, Component, BadgeCustomData, Dialog, List, StandardListItem, Button) {
+    "sap/ui/core/Fragment"
+], function (JSONModel, Element, Component, BadgeCustomData, Fragment) {
     "use strict";
 
     // ─── Singletons ─────────────────────────────────────────────────────────────
     var _oNotifModel = new JSONModel({ notifications: [], unreadCount: 0 });
     var _oDialog     = null;
-    var _oButtonRef  = null;
+    var _oLoadPromise = null;
+    var _aButtonRefs = [];
     var _iTimer      = null;
-    var _iFindRetry  = null;
+    var _iFindLoader = null;
     var _POLL_MS     = 30000;
     var _SVC         = "/sap/opu/odata4/iwbep/all/srvd/sap/zsd_conf_req/0001/";
     var _SEEN_KEY    = "configreq_notif_seen";
@@ -45,31 +43,34 @@ sap.ui.define([
     }
 
     // ─── Tìm button trong toolbar để gắn badge ──────────────────────────────────
-    function _findButton() {
-        if (_oButtonRef) { clearInterval(_iFindRetry); return; }
-        var oFound = null;
+    function _findButtons() {
+        _aButtonRefs = [];
         Element.registry.forEach(function (oEl) {
-            if (!oFound && oEl.isA && oEl.isA("sap.m.Button") &&
-                oEl.getText && oEl.getText() === "Thông báo") {
-                oFound = oEl;
+            if (oEl.isA && oEl.isA("sap.m.Button")) {
+                var sIcon = oEl.getIcon ? oEl.getIcon() : "";
+                var sId = oEl.getId ? oEl.getId() : "";
+                if (sIcon === "sap-icon://bell" || sId.indexOf("NotificationButton") > -1) {
+                    oEl.setIcon("sap-icon://bell");
+                    oEl.setText("");
+                    oEl.setType("Transparent");
+                    oEl.addStyleClass("configreqNotifBtn");
+                    _aButtonRefs.push(oEl);
+                }
             }
         });
-        if (oFound) {
-            _oButtonRef = oFound;
-            clearInterval(_iFindRetry);
-            _updateBadge(_oNotifModel.getProperty("/unreadCount"));
-        }
+        _updateBadge(_oNotifModel.getProperty("/unreadCount"));
     }
 
     // ─── Badge trên button ───────────────────────────────────────────────────────
     function _updateBadge(iUnread) {
-        if (!_oButtonRef) { return; }
-        _oButtonRef.getCustomData()
-            .filter(function (cd) { return cd.isA("sap.m.BadgeCustomData"); })
-            .forEach(function (cd) { _oButtonRef.removeCustomData(cd); cd.destroy(); });
-        if (iUnread > 0) {
-            _oButtonRef.addCustomData(new BadgeCustomData({ value: String(iUnread) }));
-        }
+        _aButtonRefs.forEach(function (oBtn) {
+            oBtn.getCustomData()
+                .filter(function (cd) { return cd.isA("sap.m.BadgeCustomData"); })
+                .forEach(function (cd) { oBtn.removeCustomData(cd); cd.destroy(); });
+            if (iUnread > 0) {
+                oBtn.addCustomData(new BadgeCustomData({ value: " " }));
+            }
+        });
     }
 
     // ─── Refresh count + badge ───────────────────────────────────────────────────
@@ -77,8 +78,7 @@ sap.ui.define([
         var iUnread = _oNotifModel.getProperty("/notifications")
             .filter(function (n) { return !n.read; }).length;
         _oNotifModel.setProperty("/unreadCount", iUnread);
-        _findButton();
-        _updateBadge(iUnread);
+        _findButtons();
     }
 
     // ─── Navigate — discover key fields từ OData V4 meta model thực của server ──
@@ -147,58 +147,31 @@ sap.ui.define([
         });
     }
 
-    // ─── Tạo Dialog notification — build sẵn, KHÔNG làm trong press handler ─────
+    // ─── Tạo Dialog notification — load fragment ─────
     function _buildDialog() {
-        if (_oDialog) { return; }   // chỉ build 1 lần
-
-        try {
-            var oList = new List({
-                items: {
-                    path: "notification>/notifications",
-                    template: new StandardListItem({
-                        title:       "{notification>title}",
-                        description: "{notification>description}",
-                        info:        "{notification>timeDisplay}",
-                        infoState: {
-                            path: "notification>read",
-                            formatter: function (bRead) { return bRead ? "None" : "Warning"; }
-                        },
-                        type:        "Active",
-                        press: function (oEvent) { oModule.onNotificationItemPress(oEvent); }
-                    })
-                },
-                noDataText: "Không có thông báo mới",
-                mode: "None"
-            });
-
-            _oDialog = new Dialog({
-                title:         "Thông báo",
-                contentWidth:  "420px",
-                contentHeight: "380px",
-                content: [oList],
-                beginButton: new Button({
-                    text:  "Đánh dấu tất cả đã đọc",
-                    press: function () { oModule.onMarkAllRead(); }
-                }),
-                endButton: new Button({
-                    text:  "Đóng",
-                    press: function () { _oDialog.close(); }
-                })
-            });
-
+        if (_oLoadPromise) { return _oLoadPromise; }
+        
+        _oLoadPromise = Fragment.load({
+            name: "zcapstone.configreqmanager.ext.fragment.NotificationPopover",
+            controller: oModule
+        }).then(function (oPopover) {
+            _oDialog = oPopover;
             _oDialog.setModel(_oNotifModel, "notification");
-
+            
             _oNotifModel.attachPropertyChange(function () {
                 if (!_oDialog) { return; }
                 var iUnread = _oNotifModel.getProperty("/unreadCount");
                 _oDialog.setTitle("Thông báo" + (iUnread > 0 ? " (" + iUnread + " chưa đọc)" : ""));
             });
 
-            console.log("[Notification] Dialog built OK");
-        } catch (e) {
+            console.log("[Notification] Fragment loaded OK");
+            return _oDialog;
+        }).catch(function (e) {
             console.error("[Notification] _buildDialog FAILED:", e);
             _oDialog = null;
-        }
+        });
+
+        return _oLoadPromise;
     }
 
     // ─── Trích key từ @odata.id do server trả về (đảm bảo đủ tất cả key fields) ─
@@ -275,18 +248,25 @@ sap.ui.define([
             _poll();
             _iTimer = setInterval(_poll, _POLL_MS);
 
-            var iRetry = 0;
-            _iFindRetry = setInterval(function () {
-                _findButton();
-                if (++iRetry >= 15) { clearInterval(_iFindRetry); }
+            _iFindLoader = setInterval(function () {
+                _findButtons();
             }, 1000);
         },
 
         onNotificationPress: function () {
-            // FE V4 gọi custom action handler qua FPMHelper, KHÔNG truyền UI5 Event
-            // Không được dùng oEvent.getSource() — oEvent luôn là undefined ở đây
-            if (!_oDialog) { _buildDialog(); }
-            if (_oDialog) { _oDialog.open(); }
+            var fnOpen = function(oDlg) {
+                if (!oDlg) return;
+                if (oDlg.isA("sap.m.ResponsivePopover") && _aButtonRefs[0]) {
+                    oDlg.openBy(_aButtonRefs[0]);
+                } else if (oDlg.open) {
+                    oDlg.open();
+                }
+            };
+            
+            var p = _buildDialog();
+            if (p && p.then) {
+                p.then(fnOpen);
+            }
         },
 
         onMarkAllRead: function () {

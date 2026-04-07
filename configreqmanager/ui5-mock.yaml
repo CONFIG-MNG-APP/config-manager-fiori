@@ -17,6 +17,27 @@ server:
       configuration:
         flp:
           theme: sap_horizon
+          apps:
+            - target: /configmmroute
+              local: ../../configmmroute/configmmroute
+              intent:
+                object: MMRoute
+                action: review
+            - target: /configfilimit
+              local: ../../configfilimit/configfilimit
+              intent:
+                object: FILimit
+                action: review
+            - target: /configsdprice
+              local: ../../configsdprice/configsdprice
+              intent:
+                object: SDPrice
+                action: review
+            - target: /configmmsafestock
+              local: ../../configmmsafestock/configmmsafestock
+              intent:
+                object: MMSafeStock
+                action: review
     - name: sap-fe-mockserver
       afterMiddleware: fiori-tools-appreload
       configuration:

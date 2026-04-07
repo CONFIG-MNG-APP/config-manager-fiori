@@ -75,13 +75,26 @@
     }
   },
   "sap.ui5": {
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "zcapstone.configreqmanager.ext.controller.ListReportExtension"
+          }
+        }
+      }
+    },
     "flexEnabled": true,
     "dependencies": {
       "minUI5Version": "1.108.33",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.fe.templates": {}
+        "sap.fe.templates": {},
+        "sap.f": {},
+        "sap.viz": {},
+        "sap.suite.ui.microchart": {},
+        "sap.tnt": {}
       }
     },
     "contentDensities": {
@@ -123,6 +136,11 @@
       "config": {},
       "routes": [
         {
+          "pattern": "dashboard",
+          "name": "Dashboard",
+          "target": "Dashboard"
+        },
+        {
           "pattern": ":?query:",
           "name": "ZC_CONF_REQ_HList",
           "target": "ZC_CONF_REQ_HList"
@@ -139,6 +157,13 @@
         }
       ],
       "targets": {
+        "Dashboard": {
+          "type": "View",
+          "id": "Dashboard",
+          "name": "zcapstone.configreqmanager.view.Dashboard",
+          "viewType": "XML",
+          "viewLevel": 0
+        },
         "ZC_CONF_REQ_HList": {
           "type": "Component",
           "id": "ZC_CONF_REQ_HList",
@@ -158,12 +183,12 @@
               "views": {
                 "paths": [
                   {
-                    "key": "All",
-                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#All"
-                  },
-                  {
                     "key": "Submitted",
                     "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Submitted"
+                  },
+                  {
+                    "key": "All",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#All"
                   },
                   {
                     "key": "Approved",
@@ -172,17 +197,33 @@
                   {
                     "key": "Rejected",
                     "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Rejected"
+                  },
+                  {
+                    "key": "Draft",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Draft"
                   }
                 ]
               },
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.SelectionFields": {
                   "filterFields": {
+                    "ReqTitle": {
+                      "label": "{{colRequestTitle}}"
+                    },
                     "ModuleId": {
-                      "label": "Module",
+                      "label": "{{colModule}}",
                       "settings": {
                         "defaultValues": []
                       }
+                    },
+                    "EnvId": {
+                      "label": "{{colEnvironment}}"
+                    },
+                    "Status": {
+                      "label": "{{colStatus}}"
+                    },
+                    "CreatedBy": {
+                      "label": "{{colRequestedBy}}"
                     }
                   }
                 },
@@ -192,11 +233,53 @@
                     "selectionMode": "Multi",
                     "requestAtLeast": ["StatusCriticality", "ModuleId"]
                   },
+                  "columns": {
+                    "CustomModuleColumn": {
+                      "header": "{{colModule}}",
+                      "width": "8rem",
+                      "properties": ["ModuleId"],
+                      "position": {
+                        "placement": "After",
+                        "anchor": "DataField::ReqTitle"
+                      },
+                      "template": "zcapstone.configreqmanager.ext.fragment.ModuleColumn",
+                      "availability": "Default"
+                    },
+                    "CustomEnvColumn": {
+                      "header": "{{colEnvironment}}",
+                      "width": "8rem",
+                      "properties": ["EnvId"],
+                      "position": {
+                        "placement": "After",
+                        "anchor": "CustomModuleColumn"
+                      },
+                      "template": "zcapstone.configreqmanager.ext.fragment.EnvColumn",
+                      "availability": "Default"
+                    },
+                    "CustomStatusColumn": {
+                      "header": "{{colStatus}}",
+                      "width": "10rem",
+                      "properties": ["Status"],
+                      "position": {
+                        "placement": "After",
+                        "anchor": "CustomEnvColumn"
+                      },
+                      "template": "zcapstone.configreqmanager.ext.fragment.StatusColumn",
+                      "availability": "Default"
+                    }
+                  },
                   "actions": {
                     "NotificationButton": {
                       "press": "zcapstone.configreqmanager.ext.fragment.NotificationButton.onNotificationPress",
-                      "text": "Thông báo",
                       "icon": "sap-icon://bell",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": false
+                    },
+                    "DashboardButton": {
+                      "press": "zcapstone.configreqmanager.ext.fragment.DashboardNavButton.onDashboardPress",
+                      "text": "Dashboard",
+                      "icon": "sap-icon://overview-chart",
                       "visible": true,
                       "enabled": true,
                       "requiresSelection": false
@@ -276,7 +359,11 @@
   },
   "sap.fe": {
     "app": {
-      "enableLazyLoading": true
+      "enableLazyLoading": true,
+      "flexibleColumnLayout": {
+        "defaultTwoColumnLayoutType": "TwoColumnsMidExpanded",
+        "defaultThreeColumnLayoutType": "ThreeColumnsEndExpanded"
+      }
     }
   }
 }

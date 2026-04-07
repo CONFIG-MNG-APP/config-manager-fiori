@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt">
+    <tnt:InfoLabel
+        text="{Status}"
+        renderMode="Narrow"
+        colorScheme="{= ${path: 'Status', targetType: 'any'} === 'APPROVED' ? 5 : ${path: 'Status', targetType: 'any'} === 'REJECTED' ? 1 : ${path: 'Status', targetType: 'any'} === 'SUBMITTED' ? 8 : 10 }"
+        icon="{= ${path: 'Status', targetType: 'any'} === 'APPROVED' ? 'sap-icon://sys-enter-2' : ${path: 'Status', targetType: 'any'} === 'REJECTED' ? 'sap-icon://error' : ${path: 'Status', targetType: 'any'} === 'SUBMITTED' ? 'sap-icon://pending' : 'sap-icon://edit' }"/>
+</core:FragmentDefinition>
