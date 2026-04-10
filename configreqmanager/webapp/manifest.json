@@ -80,6 +80,9 @@
         "sap.ui.controllerExtensions": {
           "sap.fe.templates.ListReport.ListReportController": {
             "controllerName": "zcapstone.configreqmanager.ext.controller.ListReportExtension"
+          },
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "zcapstone.configreqmanager.ext.controller.ObjectPageExtension"
           }
         }
       }
