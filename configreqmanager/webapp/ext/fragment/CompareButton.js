@@ -5,6 +5,7 @@ sap.ui.define([
 
     return {
         onComparePress: function(oEvent) {
+            console.log("[CompareButton v3 - USHELL FIX ACTIVE]");
             console.log("onComparePress triggered!");
             try {
                 var oBindingContext = oEvent.getSource().getBindingContext();
