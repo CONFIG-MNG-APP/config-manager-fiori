@@ -21,8 +21,11 @@ sap.ui.define([
                 console.log("[AuditTrail] Navigating with ReqId:", sReqId);
 
                 if (!sap.ushell || !sap.ushell.Container) {
-                    // Local dev fallback: open in new tab without FLP shell
-                    var sUrl = "../audittrailformanager/webapp/index.html?ReqId=" + encodeURIComponent(sReqId);
+                    // Fallback khi không có FLP shell (truy cập trực tiếp qua BSP URL)
+                    var sUrl = window.location.origin
+                        + "/sap/bc/ui5_ui5/sap/zaudittrail_mgr"
+                        + "?sap-client=324"
+                        + "&ReqId=" + encodeURIComponent(sReqId);
                     window.open(sUrl, "_blank");
                     return;
                 }
