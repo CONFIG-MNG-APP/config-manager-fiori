@@ -10,8 +10,16 @@
     </edmx:Reference>
     <edmx:DataServices>
         <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.Container/ZC_CONF_REQ_H">
+                <Annotation Term="UI.CreateHidden" Bool="true"/>
+                <Annotation Term="UI.DeleteHidden" Bool="true"/>
+                <Annotation Term="UI.UpdateHidden" Bool="true"/>
+            </Annotations>
 
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType">
+                <Annotation Term="UI.CreateHidden" Bool="true"/>
+                <Annotation Term="UI.DeleteHidden" Bool="true"/>
+                <Annotation Term="UI.UpdateHidden" Bool="true"/>
 
                 <!-- ═══ Quick Filter Tab Variants ═══════════════════════════════════ -->
 
@@ -184,7 +192,7 @@
                     <Record>
                         <PropertyValue Property="TypeName" String="Change Request"/>
                         <PropertyValue Property="TypeNamePlural" String="Change Requests"/>
-                        <PropertyValue Property="ImageUrl" String="sap-icon://approvals"/>
+                        <PropertyValue Property="TypeImageUrl" String="sap-icon://approvals"/>
                         <PropertyValue Property="Title">
                             <Record Type="UI.DataField">
                                 <PropertyValue Property="Label" String="Request Title"/>
@@ -358,7 +366,17 @@
 
             <!-- ═══ Items Table Columns ══════════════════════════════════════════════ -->
 
+            <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.Container/ZC_CONF_REQ_I">
+                <Annotation Term="UI.CreateHidden" Bool="true"/>
+                <Annotation Term="UI.DeleteHidden" Bool="true"/>
+                <Annotation Term="UI.UpdateHidden" Bool="true"/>
+            </Annotations>
+
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_IType">
+                <Annotation Term="UI.CreateHidden" Bool="true"/>
+                <Annotation Term="UI.DeleteHidden" Bool="true"/>
+                <Annotation Term="UI.UpdateHidden" Bool="true"/>
+
                 <Annotation Term="UI.LineItem">
                     <Collection>
                         <Record Type="UI.DataField">

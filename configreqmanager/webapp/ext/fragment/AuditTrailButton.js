@@ -35,7 +35,8 @@ sap.ui.define([
                     },
                     params: {
                         ReqId: sReqId
-                    }
+                    },
+                    writeHistory: true
                 });
 
             } catch (e) {

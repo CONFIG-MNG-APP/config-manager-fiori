@@ -214,10 +214,6 @@
     font-weight: 700 !important;
 }
 
-/* ── Object Page: header image icon area ─────────────────────────── */
-.sapFDynamicPageTitle .sapUiIcon {
-    font-size: 2rem !important;
-}
 
 /* ── Notification badge ───────────────────────────────────────────── */
 .sapMBtn .sapMBadge {

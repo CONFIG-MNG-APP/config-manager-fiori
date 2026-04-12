@@ -38,6 +38,11 @@ server:
               intent:
                 object: MMSafeStock
                 action: review
+            - target: /audittrail
+              local: ../../audittrail/audittrailformanager
+              intent:
+                object: AuditTrail
+                action: display
     - name: sap-fe-mockserver
       afterMiddleware: fiori-tools-appreload
       configuration:

@@ -36,6 +36,12 @@
       }
     },
     "crossNavigation": {
+      "outbounds": {
+        "AuditTrail-display": {
+          "semanticObject": "AuditTrail",
+          "action": "display"
+        }
+      },
       "inbounds": {
         "ConfigReq-manage": {
           "semanticObject": "ConfigReq",

@@ -23,13 +23,17 @@ sap.ui.define([
                 var sReqId = oParentContext.getProperty("ReqId");
 
                 // ConfId thuộc _Items → dùng oBindingContext (item row)
-                // TargetCds không tồn tại trên _Items → dùng ModuleId để route
-                oBindingContext.requestProperty("ConfId").then(function(sConfId) {
-                    var sTargetCds = "";
+                // TargetCds thuộc _Header → requestProperty vì không có trong $select mặc định
+                Promise.all([
+                    oBindingContext.requestProperty("ConfId"),
+                    oParentContext.requestProperty("TargetCds")
+                ]).then(function(aResults) {
+                    var sConfId = aResults[0];
+                    var sTargetCds = aResults[1] || "";
 
                     console.log("ModuleId:", sModuleId, "TargetCds:", sTargetCds);
                     console.log("ReqId:", sReqId, "ConfId:", sConfId);
-                    
+
                     var sSemanticObject = "";
                     var sCdsUpper = sTargetCds.toUpperCase();
                     
