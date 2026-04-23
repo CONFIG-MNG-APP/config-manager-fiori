@@ -1,0 +1,29 @@
+{
+  "generationParameters": {
+    "generationDate": "Sat Mar 21 2026 22:08:39 GMT+0700 (Indochina Time)",
+    "generatorPlatform": "Visual Studio Code",
+    "serviceType": "SAP System (ABAP On-Premise)",
+    "metadataFilename": "",
+    "serviceUrl": "https://s40lp1.ucc.cit.tum.de/sap/opu/odata4/iwbep/all/srvd/sap/zsd_fi_limit_conf/0001/",
+    "appName": "configfilimit",
+    "appTitle": "Compare config FI Limit",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "zcaption",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.108.33",
+    "enableEslint": false,
+    "enableTypeScript": false,
+    "showMockDataInfo": true,
+    "generatorVersion": "1.21.0",
+    "template": "List Report Page V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [
+      {
+        "type": "Main Entity",
+        "value": "ZC_FI_LIMIT_CONF"
+      }
+    ],
+    "launchText": "To launch the generated application, run the following from the generated application root folder:\n\n```\n    npm start\n```",
+    "valueHelpDownloaded": true
+  }
+}

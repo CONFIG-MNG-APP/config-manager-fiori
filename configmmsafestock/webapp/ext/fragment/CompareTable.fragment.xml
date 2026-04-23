@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+    <Table id="mmsafestockCompareTable" width="100%">
+        <columns>
+            <Column id="colField">
+                <Label id="lblField" text="Configuration Field" />
+            </Column>
+            <Column id="colOldValue">
+                <Label id="lblOldValue" text="Current Value (Before)" />
+            </Column>
+            <Column id="colNewValue">
+                <Label id="lblNewValue" text="Proposed Value (After)" />
+            </Column>
+            <Column id="colStatus">
+                <Label id="lblStatus" text="Change Status" />
+            </Column>
+        </columns>
+        <items>
+            <!-- Environment -->
+            <ColumnListItem id="cliEnv">
+                <cells>
+                    <Text id="txtEnvField" text="Environment" />
+                    <ObjectStatus id="osOldEnv" text="{OldEnvId}" state="{= ${EnvId} !== ${OldEnvId} ? 'Error' : 'None'}" />
+                    <ObjectStatus id="osNewEnv" text="{EnvId}" state="{= ${EnvId} !== ${OldEnvId} ? 'Success' : 'None'}" />
+                    <core:Icon id="iconEnv" src="{= ${EnvId} !== ${OldEnvId} ? 'sap-icon://edit' : 'sap-icon://accept'}" color="{= ${EnvId} !== ${OldEnvId} ? '#bb0000' : '#107e3e'}" />
+                </cells>
+            </ColumnListItem>
+
+            <!-- Plant -->
+            <ColumnListItem id="cliPlant">
+                <cells>
+                    <Text id="txtPlantField" text="Plant" />
+                    <ObjectStatus id="osOldPlant" text="{OldPlantId}" state="{= ${PlantId} !== ${OldPlantId} ? 'Error' : 'None'}" />
+                    <ObjectStatus id="osNewPlant" text="{PlantId}" state="{= ${PlantId} !== ${OldPlantId} ? 'Success' : 'None'}" />
+                    <core:Icon id="iconPlant" src="{= ${PlantId} !== ${OldPlantId} ? 'sap-icon://edit' : 'sap-icon://accept'}" color="{= ${PlantId} !== ${OldPlantId} ? '#bb0000' : '#107e3e'}" />
+                </cells>
+            </ColumnListItem>
+
+            <!-- Material Group -->
+            <ColumnListItem id="cliMatGroup">
+                <cells>
+                    <Text id="txtMatGroupField" text="Material Group" />
+                    <ObjectStatus id="osOldMatGroup" text="{OldMatGroup}" state="{= ${MatGroup} !== ${OldMatGroup} ? 'Error' : 'None'}" />
+                    <ObjectStatus id="osNewMatGroup" text="{MatGroup}" state="{= ${MatGroup} !== ${OldMatGroup} ? 'Success' : 'None'}" />
+                    <core:Icon id="iconMatGroup" src="{= ${MatGroup} !== ${OldMatGroup} ? 'sap-icon://edit' : 'sap-icon://accept'}" color="{= ${MatGroup} !== ${OldMatGroup} ? '#bb0000' : '#107e3e'}" />
+                </cells>
+            </ColumnListItem>
+
+            <!-- Minimum Quantity -->
+            <ColumnListItem id="cliMinQty">
+                <cells>
+                    <Text id="txtMinQtyField" text="Minimum Quantity" />
+                    <ObjectStatus id="osOldMinQty" text="{OldMinQty}" state="{= ${MinQty} !== ${OldMinQty} ? 'Error' : 'None'}" />
+                    <ObjectStatus id="osNewMinQty" text="{MinQty}" state="{= ${MinQty} !== ${OldMinQty} ? 'Success' : 'None'}" />
+                    <core:Icon id="iconMinQty" src="{= ${MinQty} !== ${OldMinQty} ? 'sap-icon://edit' : 'sap-icon://accept'}" color="{= ${MinQty} !== ${OldMinQty} ? '#bb0000' : '#107e3e'}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

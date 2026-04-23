@@ -1,0 +1,255 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata4/iwbep/all/srvd/sap/zsd_mm_route_conf/0001/$metadata">
+        <edmx:Include Namespace="com.sap.gateway.srvd.zsd_mm_route_conf.v0001" Alias="SAP__self"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+
+            <Annotations Target="com.sap.gateway.srvd.zsd_mm_route_conf.v0001.MMRouteConfType">
+
+                <!-- ═══ Page Title ══════════════════════════════════════════════ -->
+
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="MM Route Change"/>
+                        <PropertyValue Property="TypeNamePlural" String="MM Route Changes"/>
+                        <PropertyValue Property="ImageUrl" String="sap-icon://compare"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="PlantId"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="ActionType"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.HeaderFacets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#LineStatus"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#ChangeNote"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="UI.DataPoint" Qualifier="LineStatus">
+                    <Record>
+                        <PropertyValue Property="Title" String="Status"/>
+                        <PropertyValue Property="Value" Path="LineStatus"/>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.DataPoint" Qualifier="ChangeNote">
+                    <Record>
+                        <PropertyValue Property="Title" String="Change Note"/>
+                        <PropertyValue Property="Value" Path="ChangeNote"/>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ List Report – Filter Fields ═════════════════════════════ -->
+
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>ReqId</PropertyPath>
+                        <PropertyPath>ConfId</PropertyPath>
+                        <PropertyPath>EnvId</PropertyPath>
+                        <PropertyPath>ActionType</PropertyPath>
+                        <PropertyPath>PlantId</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ List Report – Table Columns ═════════════════════════════ -->
+
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Action"/>
+                            <PropertyValue Property="Value" Path="ActionType"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Plant"/>
+                            <PropertyValue Property="Value" Path="PlantId"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Send Warehouse"/>
+                            <PropertyValue Property="Value" Path="SendWh"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Receive Warehouse"/>
+                            <PropertyValue Property="Value" Path="ReceiveWh"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Transport Mode"/>
+                            <PropertyValue Property="Value" Path="TransMode"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Allowed"/>
+                            <PropertyValue Property="Value" Path="IsAllowed"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Line Status"/>
+                            <PropertyValue Property="Value" Path="LineStatus"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Change Note"/>
+                            <PropertyValue Property="Value" Path="ChangeNote"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ Object Page Field Groups ════════════════════════════════ -->
+
+                <Annotation Term="UI.FieldGroup" Qualifier="PROPOSED">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="Proposed Values"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Action"/>
+                                    <PropertyValue Property="Value" Path="ActionType"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Environment"/>
+                                    <PropertyValue Property="Value" Path="EnvId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Plant"/>
+                                    <PropertyValue Property="Value" Path="PlantId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Send Warehouse"/>
+                                    <PropertyValue Property="Value" Path="SendWh"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Receive Warehouse"/>
+                                    <PropertyValue Property="Value" Path="ReceiveWh"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Inspector"/>
+                                    <PropertyValue Property="Value" Path="InspectorId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Transport Mode"/>
+                                    <PropertyValue Property="Value" Path="TransMode"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Route Allowed"/>
+                                    <PropertyValue Property="Value" Path="IsAllowed"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.FieldGroup" Qualifier="CURRENT">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="Current Values"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Environment (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldEnvId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Plant (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldPlantId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Send Warehouse (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldSendWh"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Receive Warehouse (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldReceiveWh"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Inspector (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldInspectorId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Transport Mode (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldTransMode"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Route Allowed (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldIsAllowed"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Version (Before)"/>
+                                    <PropertyValue Property="Value" Path="OldVersionNo"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.FieldGroup" Qualifier="META">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="Change Details"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Line Status"/>
+                                    <PropertyValue Property="Value" Path="LineStatus"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Version"/>
+                                    <PropertyValue Property="Value" Path="VersionNo"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Change Note"/>
+                                    <PropertyValue Property="Value" Path="ChangeNote"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Created By"/>
+                                    <PropertyValue Property="Value" Path="CreatedBy"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Created At"/>
+                                    <PropertyValue Property="Value" Path="CreatedAt"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ Object Page Facets ══════════════════════════════════════ -->
+
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Change Details"/>
+                            <PropertyValue Property="ID" String="MetaInfo"/>
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#META"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+            </Annotations>
+
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,178 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata4/iwbep/all/srvd/sap/zsd_sd_price_conf/0001/$metadata">
+        <edmx:Include Namespace="com.sap.gateway.srvd.zsd_sd_price_conf.v0001" Alias="SAP__self"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+
+            <Annotations Target="com.sap.gateway.srvd.zsd_sd_price_conf.v0001.SDPriceConfType">
+
+                <!-- ═══ Page Title ══════════════════════════════════════════════ -->
+
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="SD Price Change"/>
+                        <PropertyValue Property="TypeNamePlural" String="SD Price Changes"/>
+                        <PropertyValue Property="ImageUrl" String="sap-icon://compare"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="ConfId"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Label" String="Status"/>
+                                <PropertyValue Property="Value" Path="LineStatus"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ List Report – Filter Fields ═════════════════════════════ -->
+
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>ReqId</PropertyPath>
+                        <PropertyPath>ConfId</PropertyPath>
+                        <PropertyPath>EnvId</PropertyPath>
+                        <PropertyPath>ActionType</PropertyPath>
+                        <PropertyPath>CustGroup</PropertyPath>
+                        <PropertyPath>MaterialGrp</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ List Report – Table Columns ═════════════════════════════ -->
+
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Action"/>
+                            <PropertyValue Property="Value" Path="ActionType"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Branch (New)"/>
+                            <PropertyValue Property="Value" Path="BranchId"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Branch (Old)"/>
+                            <PropertyValue Property="Value" Path="OldBranchId"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Customer Group (New)"/>
+                            <PropertyValue Property="Value" Path="CustGroup"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Customer Group (Old)"/>
+                            <PropertyValue Property="Value" Path="OldCustGroup"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Max Discount (New)"/>
+                            <PropertyValue Property="Value" Path="MaxDiscount"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Max Discount (Old)"/>
+                            <PropertyValue Property="Value" Path="OldMaxDiscount"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Min Order Value (New)"/>
+                            <PropertyValue Property="Value" Path="MinOrderVal"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Min Order Value (Old)"/>
+                            <PropertyValue Property="Value" Path="OldMinOrderVal"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Currency"/>
+                            <PropertyValue Property="Value" Path="Currency"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Valid From"/>
+                            <PropertyValue Property="Value" Path="ValidFrom"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Valid To"/>
+                            <PropertyValue Property="Value" Path="ValidTo"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Line Status"/>
+                            <PropertyValue Property="Value" Path="LineStatus"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Change Note"/>
+                            <PropertyValue Property="Value" Path="ChangeNote"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- ═══ Object Page Field Groups ════════════════════════════════ -->
+
+                <Annotation Term="UI.FieldGroup" Qualifier="META">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Label" String="Change Details"/>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Line Status"/>
+                                    <PropertyValue Property="Value" Path="LineStatus"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Version"/>
+                                    <PropertyValue Property="Value" Path="VersionNo"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Change Note"/>
+                                    <PropertyValue Property="Value" Path="ChangeNote"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Created By"/>
+                                    <PropertyValue Property="Value" Path="CreatedBy"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Created At"/>
+                                    <PropertyValue Property="Value" Path="CreatedAt"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- ═══ Object Page Facets ══════════════════════════════════════ -->
+
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Change Details"/>
+                            <PropertyValue Property="ID" String="MetaInfo"/>
+                            <PropertyValue Property="Target" AnnotationPath="@com.sap.vocabularies.UI.v1.FieldGroup#META"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+            </Annotations>
+
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

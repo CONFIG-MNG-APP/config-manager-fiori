@@ -1,0 +1,197 @@
+{
+  "_version": "1.48.0",
+  "sap.app": {
+    "id": "zcapstion.configmmsafestock",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.21.0",
+      "toolsId": "c1843623-c4ff-4a9f-8104-c314c69e8dfa"
+    },
+    "dataSources": {
+      "annotation": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotation.xml",
+        "settings": {
+          "localUri": "annotations/annotation.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata4/iwbep/all/srvd/sap/zsd_mm_safe_stock/0001/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "annotation"
+          ],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "MMSafeStock-review": {
+          "semanticObject": "MMSafeStock",
+          "action": "review",
+          "title": "MM Safe Stock Compare",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.108.33",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "zcapstion.configmmsafestock.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "MMSafeStockList",
+          "target": "MMSafeStockList"
+        },
+        {
+          "pattern": "MMSafeStock({key}):?query:",
+          "name": "MMSafeStockObjectPage",
+          "target": "MMSafeStockObjectPage"
+        }
+      ],
+      "targets": {
+        "MMSafeStockList": {
+          "type": "Component",
+          "id": "MMSafeStockList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/MMSafeStock",
+              "variantManagement": "None",
+              "navigation": {
+                "MMSafeStock": {
+                  "detail": {
+                    "route": "MMSafeStockObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                },
+                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                  "filterFields": {
+                    "ReqId": {
+                      "label": "Request ID",
+                      "availability": "Hidden"
+                    },
+                    "ConfId": {
+                      "label": "Config ID",
+                      "availability": "Hidden"
+                    }
+                  }
+                }
+              },
+              "initialLoad": false
+            }
+          }
+        },
+        "MMSafeStockObjectPage": {
+          "type": "Component",
+          "id": "MMSafeStockObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/MMSafeStock",
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.Facets": {
+                  "sections": {
+                    "CustomCompareSection": {
+                      "template": "zcapstion.configmmsafestock.ext.fragment.CompareTable",
+                      "title": "Side-by-Side Comparison",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "MetaInfo"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {
+      "enableLazyLoading": true
+    }
+  }
+}

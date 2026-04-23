@@ -1,0 +1,119 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+    <Table id="compareSDPriceTable" inset="false">
+        <columns>
+            <Column id="colField">
+                <Text id="txtColField" text="Configuration Field" />
+            </Column>
+            <Column id="colOldVal">
+                <Text id="txtColOldVal" text="Current Value (Before)" />
+            </Column>
+            <Column id="colNewVal">
+                <Text id="txtColNewVal" text="Proposed Value (After)" />
+            </Column>
+            <Column id="colStatus" hAlign="Center" width="8rem">
+                <Text id="txtColStatus" text="Change Status" />
+            </Column>
+        </columns>
+        <items>
+            <!-- 1. Environment -->
+            <ColumnListItem id="rowEnvId">
+                <cells>
+                    <Label id="lblEnvId" text="Environment" design="Bold"/>
+                    <ObjectStatus id="osOldEnvId" text="{OldEnvId}" state="{= ${OldEnvId} !== ${EnvId} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewEnvId" text="{EnvId}" state="{= ${OldEnvId} !== ${EnvId} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconEnvId" src="{= ${OldEnvId} !== ${EnvId} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldEnvId} !== ${EnvId} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+            
+            <!-- 2. Branch -->
+            <ColumnListItem id="rowBranchId">
+                <cells>
+                    <Label id="lblBranchId" text="Branch" design="Bold"/>
+                    <ObjectStatus id="osOldBranchId" text="{OldBranchId}" state="{= ${OldBranchId} !== ${BranchId} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewBranchId" text="{BranchId}" state="{= ${OldBranchId} !== ${BranchId} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconBranchId" src="{= ${OldBranchId} !== ${BranchId} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldBranchId} !== ${BranchId} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 3. Customer Group -->
+            <ColumnListItem id="rowCustGroup">
+                <cells>
+                    <Label id="lblCustGroup" text="Customer Group" design="Bold"/>
+                    <ObjectStatus id="osOldCustGroup" text="{OldCustGroup}" state="{= ${OldCustGroup} !== ${CustGroup} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewCustGroup" text="{CustGroup}" state="{= ${OldCustGroup} !== ${CustGroup} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconCustGroup" src="{= ${OldCustGroup} !== ${CustGroup} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldCustGroup} !== ${CustGroup} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+            
+            <!-- 4. Material Group -->
+            <ColumnListItem id="rowMaterialGrp">
+                <cells>
+                    <Label id="lblMaterialGrp" text="Material Group" design="Bold"/>
+                    <ObjectStatus id="osOldMaterialGrp" text="{OldMaterialGrp}" state="{= ${OldMaterialGrp} !== ${MaterialGrp} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewMaterialGrp" text="{MaterialGrp}" state="{= ${OldMaterialGrp} !== ${MaterialGrp} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconMaterialGrp" src="{= ${OldMaterialGrp} !== ${MaterialGrp} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldMaterialGrp} !== ${MaterialGrp} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 5. Max Discount -->
+            <ColumnListItem id="rowMaxDiscount">
+                <cells>
+                    <Label id="lblMaxDiscount" text="Max Discount (%)" design="Bold"/>
+                    <ObjectStatus id="osOldMaxDiscount" text="{OldMaxDiscount}" state="{= ${OldMaxDiscount} !== ${MaxDiscount} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewMaxDiscount" text="{MaxDiscount}" state="{= ${OldMaxDiscount} !== ${MaxDiscount} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconMaxDiscount" src="{= ${OldMaxDiscount} !== ${MaxDiscount} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldMaxDiscount} !== ${MaxDiscount} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 6. Min Order Value -->
+            <ColumnListItem id="rowMinOrderVal">
+                <cells>
+                    <Label id="lblMinOrderVal" text="Min Order Value" design="Bold"/>
+                    <ObjectStatus id="osOldMinOrderVal" text="{OldMinOrderVal}" state="{= ${OldMinOrderVal} !== ${MinOrderVal} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewMinOrderVal" text="{MinOrderVal}" state="{= ${OldMinOrderVal} !== ${MinOrderVal} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconMinOrderVal" src="{= ${OldMinOrderVal} !== ${MinOrderVal} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldMinOrderVal} !== ${MinOrderVal} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 7. Currency -->
+            <ColumnListItem id="rowCurrency">
+                <cells>
+                    <Label id="lblCurrency" text="Currency" design="Bold"/>
+                    <ObjectStatus id="osOldCurrency" text="{OldCurrency}" state="{= ${OldCurrency} !== ${Currency} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewCurrency" text="{Currency}" state="{= ${OldCurrency} !== ${Currency} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconCurrency" src="{= ${OldCurrency} !== ${Currency} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldCurrency} !== ${Currency} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 8. Approver Group -->
+            <ColumnListItem id="rowApproverGrp">
+                <cells>
+                    <Label id="lblApproverGrp" text="Approver Group" design="Bold"/>
+                    <ObjectStatus id="osOldApproverGrp" text="{OldApproverGrp}" state="{= ${OldApproverGrp} !== ${ApproverGrp} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewApproverGrp" text="{ApproverGrp}" state="{= ${OldApproverGrp} !== ${ApproverGrp} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconApproverGrp" src="{= ${OldApproverGrp} !== ${ApproverGrp} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldApproverGrp} !== ${ApproverGrp} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 9. Valid From -->
+            <ColumnListItem id="rowValidFrom">
+                <cells>
+                    <Label id="lblValidFrom" text="Valid From" design="Bold"/>
+                    <ObjectStatus id="osOldValidFrom" text="{OldValidFrom}" state="{= ${OldValidFrom} !== ${ValidFrom} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewValidFrom" text="{ValidFrom}" state="{= ${OldValidFrom} !== ${ValidFrom} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconValidFrom" src="{= ${OldValidFrom} !== ${ValidFrom} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldValidFrom} !== ${ValidFrom} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+
+            <!-- 10. Valid To -->
+            <ColumnListItem id="rowValidTo">
+                <cells>
+                    <Label id="lblValidTo" text="Valid To" design="Bold"/>
+                    <ObjectStatus id="osOldValidTo" text="{OldValidTo}" state="{= ${OldValidTo} !== ${ValidTo} ? 'Error' : 'None' }"/>
+                    <ObjectStatus id="osNewValidTo" text="{ValidTo}" state="{= ${OldValidTo} !== ${ValidTo} ? 'Success' : 'None' }"/>
+                    <core:Icon id="iconValidTo" src="{= ${OldValidTo} !== ${ValidTo} ? 'sap-icon://edit' : 'sap-icon://accept' }" color="{= ${OldValidTo} !== ${ValidTo} ? '#bb0000' : '#107e3e' }"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

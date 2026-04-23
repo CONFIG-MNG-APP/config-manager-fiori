@@ -1,0 +1,75 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Table id="CompareTable" width="100%" mode="None" class="sapUiSmallMarginTop">
+		<columns>
+			<Column id="CompareTable_Col1" width="25%"><Label id="CompareTable_Lbl1" text="Configuration Field" design="Bold"/></Column>
+			<Column id="CompareTable_Col2" width="30%"><Label id="CompareTable_Lbl2" text="Current Value (Before)" design="Bold"/></Column>
+			<Column id="CompareTable_Col3" width="30%"><Label id="CompareTable_Lbl3" text="Proposed Value (After)" design="Bold"/></Column>
+			<Column id="CompareTable_Col4" width="15%" hAlign="Center"><Label id="CompareTable_Lbl4" text="Change Status" design="Bold"/></Column>
+		</columns>
+		<items>
+			<ColumnListItem id="CompareTable_Row1">
+				<cells>
+					<Text id="CompareTable_Row1_Txt1" text="Environment" />
+					<ObjectStatus id="CompareTable_Row1_St1" text="{OldEnvId}" state="{= ${EnvId} !== ${OldEnvId} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row1_St2" text="{EnvId}" state="{= ${EnvId} !== ${OldEnvId} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row1_Ico" src="{= ${EnvId} !== ${OldEnvId} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${EnvId} !== ${OldEnvId} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+			<ColumnListItem id="CompareTable_Row2">
+				<cells>
+					<Text id="CompareTable_Row2_Txt1" text="Plant" />
+					<ObjectStatus id="CompareTable_Row2_St1" text="{OldPlantId}" state="{= ${PlantId} !== ${OldPlantId} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row2_St2" text="{PlantId}" state="{= ${PlantId} !== ${OldPlantId} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row2_Ico" src="{= ${PlantId} !== ${OldPlantId} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${PlantId} !== ${OldPlantId} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+			<ColumnListItem id="CompareTable_Row3">
+				<cells>
+					<Text id="CompareTable_Row3_Txt1" text="Send Warehouse" />
+					<ObjectStatus id="CompareTable_Row3_St1" text="{OldSendWh}" state="{= ${SendWh} !== ${OldSendWh} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row3_St2" text="{SendWh}" state="{= ${SendWh} !== ${OldSendWh} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row3_Ico" src="{= ${SendWh} !== ${OldSendWh} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${SendWh} !== ${OldSendWh} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+			<ColumnListItem id="CompareTable_Row4">
+				<cells>
+					<Text id="CompareTable_Row4_Txt1" text="Receive Warehouse" />
+					<ObjectStatus id="CompareTable_Row4_St1" text="{OldReceiveWh}" state="{= ${ReceiveWh} !== ${OldReceiveWh} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row4_St2" text="{ReceiveWh}" state="{= ${ReceiveWh} !== ${OldReceiveWh} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row4_Ico" src="{= ${ReceiveWh} !== ${OldReceiveWh} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${ReceiveWh} !== ${OldReceiveWh} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+			<ColumnListItem id="CompareTable_Row5">
+				<cells>
+					<Text id="CompareTable_Row5_Txt1" text="Transport Mode" />
+					<ObjectStatus id="CompareTable_Row5_St1" text="{OldTransMode}" state="{= ${TransMode} !== ${OldTransMode} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row5_St2" text="{TransMode}" state="{= ${TransMode} !== ${OldTransMode} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row5_Ico" src="{= ${TransMode} !== ${OldTransMode} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${TransMode} !== ${OldTransMode} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+			<ColumnListItem id="CompareTable_Row6">
+				<cells>
+					<Text id="CompareTable_Row6_Txt1" text="Inspector" />
+					<ObjectStatus id="CompareTable_Row6_St1" text="{OldInspectorId}" state="{= ${InspectorId} !== ${OldInspectorId} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row6_St2" text="{InspectorId}" state="{= ${InspectorId} !== ${OldInspectorId} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row6_Ico" src="{= ${InspectorId} !== ${OldInspectorId} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${InspectorId} !== ${OldInspectorId} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+			<ColumnListItem id="CompareTable_Row7">
+				<cells>
+					<Text id="CompareTable_Row7_Txt1" text="Route Allowed" />
+					<ObjectStatus id="CompareTable_Row7_St1" text="{OldIsAllowed}" state="{= ${IsAllowed} !== ${OldIsAllowed} ? 'Error' : 'None' }" />
+					<ObjectStatus id="CompareTable_Row7_St2" text="{IsAllowed}" state="{= ${IsAllowed} !== ${OldIsAllowed} ? 'Success' : 'None' }" />
+					<core:Icon id="CompareTable_Row7_Ico" src="{= ${IsAllowed} !== ${OldIsAllowed} ? 'sap-icon://edit' : 'sap-icon://accept' }" 
+							   color="{= ${IsAllowed} !== ${OldIsAllowed} ? '#bb0000' : '#107e3e' }" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:FragmentDefinition>
