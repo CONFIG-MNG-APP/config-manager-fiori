@@ -1,3 +1,12 @@
+# Project-specific
+archive.zip
+live_metadata.xml
+fill_evidence.js
+fix_mgr.js
+fix_mgr_links.js
+_tmp_fs/
+metadata_out.xml
+
 # Logs
 logs
 *.log

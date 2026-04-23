@@ -186,6 +186,14 @@
                     </Collection>
                 </Annotation>
 
+                <!-- ═══ Hide Action Parameters ═════════════════════════════════════════ -->
+                <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.reject(com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType)/ReqTitle">
+                    <Annotation Term="UI.Hidden" Bool="true"/>
+                </Annotations>
+                <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.reject(com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType)/RequestTitle">
+                    <Annotation Term="UI.Hidden" Bool="true"/>
+                </Annotations>
+
                 <!-- ═══ Object Page Header ════════════════════════════════════════════ -->
 
                 <Annotation Term="UI.HeaderInfo">
@@ -248,7 +256,7 @@
 
                 <!-- ═══ Object Page Field Groups ══════════════════════════════════════ -->
 
-                <!-- Request Details: title, description, submitter info — no redundant Status/Reason -->
+                <!-- Request Details: title, description, change justification, submitter info -->
                 <Annotation Term="UI.FieldGroup" Qualifier="REQ">
                     <Record Type="UI.FieldGroupType">
                         <PropertyValue Property="Label" String="Request Details"/>
@@ -261,6 +269,10 @@
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Label" String="{@i18n>colDescription}"/>
                                     <PropertyValue Property="Value" Path="Description"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>fieldChangeReason}"/>
+                                    <PropertyValue Property="Value" Path="Reason"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Label" String="{@i18n>colRequestedBy}"/>
@@ -293,12 +305,16 @@
                                     <PropertyValue Property="Label" String="Configuration Name"/>
                                     <PropertyValue Property="Value" Path="ConfName"/>
                                 </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>fieldTargetCds}"/>
+                                    <PropertyValue Property="Value" Path="TargetCds"/>
+                                </Record>
                             </Collection>
                         </PropertyValue>
                     </Record>
                 </Annotation>
 
-                <!-- Approval Decision: status + outcome fields -->
+                <!-- Approval Decision: status + outcome fields only (no Reason — belongs in Request Details) -->
                 <Annotation Term="UI.FieldGroup" Qualifier="DECISION">
                     <Record Type="UI.FieldGroupType">
                         <PropertyValue Property="Label" String="{@i18n>fgApprovalDecision}"/>
@@ -309,10 +325,6 @@
                                     <PropertyValue Property="Value" Path="Status"/>
                                     <PropertyValue Property="Criticality" Path="StatusCriticality"/>
                                     <PropertyValue Property="CriticalityRepresentation" EnumMember="UI.CriticalityRepresentationType/WithIcon"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Label" String="{@i18n>fieldRejectionReason}"/>
-                                    <PropertyValue Property="Value" Path="Reason"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Label" String="Approved By"/>

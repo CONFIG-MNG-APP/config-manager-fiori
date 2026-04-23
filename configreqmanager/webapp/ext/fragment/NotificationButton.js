@@ -36,10 +36,10 @@ sap.ui.define([
     function _relativeTime(sTs) {
         if (!sTs) { return ""; }
         var iDiff = Math.floor((Date.now() - new Date(sTs).getTime()) / 1000);
-        if (iDiff < 60)    { return "Vừa xong"; }
-        if (iDiff < 3600)  { return Math.floor(iDiff / 60)   + " phút trước"; }
-        if (iDiff < 86400) { return Math.floor(iDiff / 3600) + " giờ trước"; }
-        return Math.floor(iDiff / 86400) + " ngày trước";
+        if (iDiff < 60)    { return "Just now"; }
+        if (iDiff < 3600)  { return Math.floor(iDiff / 60)   + " min ago"; }
+        if (iDiff < 86400) { return Math.floor(iDiff / 3600) + " hr ago"; }
+        return Math.floor(iDiff / 86400) + " day(s) ago";
     }
 
     // ─── Tìm button trong toolbar để gắn badge ──────────────────────────────────
@@ -161,7 +161,7 @@ sap.ui.define([
             _oNotifModel.attachPropertyChange(function () {
                 if (!_oDialog) { return; }
                 var iUnread = _oNotifModel.getProperty("/unreadCount");
-                _oDialog.setTitle("Thông báo" + (iUnread > 0 ? " (" + iUnread + " chưa đọc)" : ""));
+                _oDialog.setTitle("Notifications" + (iUnread > 0 ? " (" + iUnread + " unread)" : ""));
             });
 
             console.log("[Notification] Fragment loaded OK");
@@ -215,8 +215,8 @@ sap.ui.define([
                         var sEntityKey = _extractEntityKey(item["@odata.id"]);
                         return {
                             notifId:     item.ReqId,
-                            title:       item.ReqTitle || "(Chưa có tiêu đề)",
-                            description: "Cần phê duyệt – " + (item.CreatedBy || "") +
+                            title:       item.ReqTitle || "(No title)",
+                            description: "Needs approval – " + (item.CreatedBy || "") +
                                          " [" + (item.ModuleId || "") + "]",
                             reqId:       item.ReqId,
                             entityKey:   sEntityKey,   // ← key đầy đủ để navigate

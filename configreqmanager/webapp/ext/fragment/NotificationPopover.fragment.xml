@@ -4,7 +4,7 @@
 
     <ResponsivePopover
         id="notificationPopover"
-        title="Thông báo ({notification>/unreadCount} chưa đọc)"
+        title="Notifications ({notification>/unreadCount} unread)"
         placement="Bottom"
         contentWidth="400px"
         contentHeight="380px">
@@ -13,7 +13,7 @@
             <List
                 id="notifList"
                 items="{notification>/notifications}"
-                noDataText="Không có thông báo mới"
+                noDataText="No new notifications"
                 mode="None">
 
                 <StandardListItem
@@ -32,14 +32,14 @@
         <beginButton>
             <Button
                 id="clearAllNotifsBtn"
-                text="Xóa tất cả"
+                text="Clear All"
                 type="Transparent"
                 press=".onClearAll"/>
         </beginButton>
         <endButton>
             <Button
                 id="markAllReadNotifsBtn"
-                text="Đánh dấu tất cả đã đọc"
+                text="Mark All as Read"
                 type="Transparent"
                 press=".onMarkAllRead"/>
         </endButton>

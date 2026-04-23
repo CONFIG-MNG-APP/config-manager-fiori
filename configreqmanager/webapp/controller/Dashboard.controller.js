@@ -12,12 +12,14 @@ sap.ui.define([
         // ── Lifecycle ────────────────────────────────────────────────────────
         onInit: function () {
             var oDashModel = new JSONModel({
-                kpi: { total: 0, pending: 0, approved: 0, rejected: 0 },
-                statusData:      [],
-                moduleData:      [],
-                recentRequests:  [],
-                lastUpdated:     "–",
-                loading:         true
+                kpi: {
+                    total: 0, pending: 0, approved: 0, rejected: 0,
+                    pctPending: 0, pctApproved: 0, pctRejected: 0
+                },
+                moduleData:     [{ module: "FI", count: 0 }, { module: "SD", count: 0 }, { module: "MM", count: 0 }],
+                recentRequests: [],
+                lastUpdated:    "–",
+                loading:        true
             });
             this.getView().setModel(oDashModel, "dashboard");
 
@@ -27,10 +29,6 @@ sap.ui.define([
                     this._loadData();
                 }.bind(this)
             });
-        },
-
-        onAfterRendering: function () {
-            this._applyChartProperties();
         },
 
         // ── Data Loading ─────────────────────────────────────────────────────
@@ -79,18 +77,19 @@ sap.ui.define([
                     hour: "2-digit", minute: "2-digit", second: "2-digit"
                 });
 
-                // Set non-KPI data immediately
+                var iPctPending  = iTotal > 0 ? Math.round(iPending  / iTotal * 100) : 0;
+                var iPctApproved = iTotal > 0 ? Math.round(iApproved / iTotal * 100) : 0;
+                var iPctRejected = iTotal > 0 ? Math.round(iRejected / iTotal * 100) : 0;
+
                 oModel.setData({
-                    kpi: { total: 0, pending: 0, approved: 0, rejected: 0 },
-                    statusData: [
-                        { status: "Pending Approval", count: iPending  },
-                        { status: "Approved",         count: iApproved },
-                        { status: "Rejected",         count: iRejected }
-                    ],
+                    kpi: {
+                        total: 0, pending: 0, approved: 0, rejected: 0,
+                        pctPending: iPctPending, pctApproved: iPctApproved, pctRejected: iPctRejected
+                    },
                     moduleData: [
-                        { module: "FI – Finance",   count: iFI },
-                        { module: "SD – Sales",     count: iSD },
-                        { module: "MM – Materials", count: iMM }
+                        { module: "FI", count: iFI },
+                        { module: "SD", count: iSD },
+                        { module: "MM", count: iMM }
                     ],
                     recentRequests: (oRecent && oRecent.value) || [],
                     lastUpdated:    sTime,
@@ -102,10 +101,11 @@ sap.ui.define([
                     total:    iTotal,
                     pending:  iPending,
                     approved: iApproved,
-                    rejected: iRejected
+                    rejected: iRejected,
+                    pctPending:  iPctPending,
+                    pctApproved: iPctApproved,
+                    pctRejected: iPctRejected
                 });
-
-                this._applyChartProperties();
             }.bind(this)).catch(function (e) {
                 console.error("[Dashboard] _loadData failed:", e);
                 oModel.setProperty("/loading", false);
@@ -139,7 +139,10 @@ sap.ui.define([
                     total:    Math.round(oTargets.total    * fEased),
                     pending:  Math.round(oTargets.pending  * fEased),
                     approved: Math.round(oTargets.approved * fEased),
-                    rejected: Math.round(oTargets.rejected * fEased)
+                    rejected: Math.round(oTargets.rejected * fEased),
+                    pctPending:  oTargets.pctPending,
+                    pctApproved: oTargets.pctApproved,
+                    pctRejected: oTargets.pctRejected
                 });
 
                 if (fProgress < 1) {
@@ -150,71 +153,6 @@ sap.ui.define([
             };
 
             requestAnimationFrame(fnStep);
-        },
-
-        // ── Chart Properties ─────────────────────────────────────────────────
-        _applyChartProperties: function () {
-            var oDonut  = this.byId("statusDonutChart");
-            var oColumn = this.byId("moduleColumnChart");
-
-            if (oDonut) {
-                oDonut.setVizProperties({
-                    title:    { visible: false },
-                    legend:   { visible: true, position: "right" },
-                    plotArea: {
-                        dataLabel: {
-                            visible: true,
-                            type: "percentage",
-                            formatString: "#%",
-                            style: { fontWeight: "bold" }
-                        },
-                        // Colors map to statusData order: Pending, Approved, Rejected
-                        colorPalette: ["#e76500", "#2b9c4e", "#bb0000"]
-                    },
-                    legend: {
-                        visible: true,
-                        position: "right",
-                        label: { style: { fontSize: "12px" } }
-                    },
-                    interaction: {
-                        selectability: {
-                            legendSelection: true,
-                            plotLassoSelection: false,
-                            plotStdSelection: true
-                        }
-                    },
-                    tooltip: {
-                        visible: true,
-                        formatString: "##"
-                    }
-                });
-            }
-
-            if (oColumn) {
-                oColumn.setVizProperties({
-                    title:    { visible: false },
-                    legend:   { visible: false },
-                    plotArea: {
-                        dataLabel: {
-                            visible: true,
-                            style: { fontWeight: "bold", fontSize: "13px" }
-                        },
-                        // Each module bar gets its own color: FI=blue, SD=indigo, MM=orange
-                        colorPalette: ["#0057b8", "#7b4ea6", "#e76500"]
-                    },
-                    categoryAxis: {
-                        title:  { visible: false },
-                        label:  { style: { fontSize: "12px", fontWeight: "600" } }
-                    },
-                    valueAxis: {
-                        title:  { visible: false },
-                        label:  { formatString: "##" }
-                    },
-                    interaction: {
-                        selectability: { plotStdSelection: true }
-                    }
-                });
-            }
         },
 
         // ── Formatters ───────────────────────────────────────────────────────

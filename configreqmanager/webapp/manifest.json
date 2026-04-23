@@ -5,7 +5,7 @@
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
-      "version": "0.0.1"
+      "version": "0.0.2"
     },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -40,6 +40,22 @@
         "AuditTrail-display": {
           "semanticObject": "AuditTrail",
           "action": "display"
+        },
+        "FILimit-review": {
+          "semanticObject": "FILimit",
+          "action": "review"
+        },
+        "SDPrice-review": {
+          "semanticObject": "SDPrice",
+          "action": "review"
+        },
+        "MMRoute-review": {
+          "semanticObject": "MMRoute",
+          "action": "review"
+        },
+        "MMSafeStock-review": {
+          "semanticObject": "MMSafeStock",
+          "action": "review"
         }
       },
       "inbounds": {

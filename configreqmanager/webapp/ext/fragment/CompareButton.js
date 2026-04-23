@@ -3,100 +3,118 @@ sap.ui.define([
 ], function(MessageToast) {
     'use strict';
 
+    var _BSP_MAP = {
+        "FILimit":     "zconfigfi_limit",
+        "SDPrice":     "zconfigsd_price",
+        "MMRoute":     "zconfigmm_route",
+        "MMSafeStock": "zconfigmm_stock"
+    };
+
+    function _resolveSemanticObject(sModuleId, sTargetCds) {
+        var sCds = (sTargetCds || "").toUpperCase();
+        if (sModuleId === "FI" || sCds.indexOf("FILIMIT") > -1) {
+            return "FILimit";
+        }
+        if (sModuleId === "SD" || sCds.indexOf("PRICE") > -1) {
+            return "SDPrice";
+        }
+        if (sModuleId === "MM") {
+            if (sCds.indexOf("ROUTE") > -1)                          { return "MMRoute"; }
+            if (sCds.indexOf("SAFE") > -1 || sCds.indexOf("STOCK") > -1) { return "MMSafeStock"; }
+            // TargetCds không khớp pattern đã biết — báo lỗi rõ ràng thay vì navigate sai
+            return null;
+        }
+        return null;
+    }
+
     return {
         onComparePress: function(oEvent) {
-            console.log("[CompareButton v3 - USHELL FIX ACTIVE]");
-            console.log("onComparePress triggered!");
+            console.log("[CompareButton v4]");
             try {
-                var oBindingContext = oEvent.getSource().getBindingContext();
-                if (!oBindingContext) {
-                    console.error("Binding Context is undefined");
+                var oItemCtx = oEvent.getSource().getBindingContext();
+                if (!oItemCtx) {
+                    console.error("Item binding context is undefined");
                     return;
                 }
-                
-                var oParentContext = oBindingContext.getBinding().getContext();
-                if (!oParentContext) {
-                    console.error("Parent Context is undefined");
+                var oHeaderCtx = oItemCtx.getBinding().getContext();
+                if (!oHeaderCtx) {
+                    console.error("Header binding context is undefined");
                     return;
                 }
-                
-                var sModuleId = oParentContext.getProperty("ModuleId");
-                var sReqId = oParentContext.getProperty("ReqId");
 
-                // ConfId thuộc _Items → dùng oBindingContext (item row)
-                // TargetCds thuộc _Header → requestProperty vì không có trong $select mặc định
+                // Dùng requestProperty cho tất cả — đảm bảo luôn có giá trị dù FE chưa $select sẵn
                 Promise.all([
-                    oBindingContext.requestProperty("ConfId"),
-                    oParentContext.requestProperty("TargetCds")
-                ]).then(function(aResults) {
-                    var sConfId = aResults[0];
-                    var sTargetCds = aResults[1] || "";
+                    oItemCtx.requestProperty("ConfId"),
+                    oHeaderCtx.requestProperty("TargetCds"),
+                    oHeaderCtx.requestProperty("ModuleId"),
+                    oHeaderCtx.requestProperty("ReqId")
+                ]).then(function(aRes) {
+                    var sConfId    = aRes[0];
+                    var sTargetCds = aRes[1] || "";
+                    var sModuleId  = aRes[2];
+                    var sReqId     = aRes[3];
 
-                    console.log("ModuleId:", sModuleId, "TargetCds:", sTargetCds);
-                    console.log("ReqId:", sReqId, "ConfId:", sConfId);
+                    console.log("ModuleId:", sModuleId, "TargetCds:", sTargetCds, "ReqId:", sReqId, "ConfId:", sConfId);
 
-                    var sSemanticObject = "";
-                    var sCdsUpper = sTargetCds.toUpperCase();
-                    
-                    if (sModuleId === 'FI' || sCdsUpper.indexOf('FILIMIT') > -1) {
-                        sSemanticObject = 'FILimit';
-                    } else if (sModuleId === 'SD' || sCdsUpper.indexOf('PRICE') > -1) {
-                        sSemanticObject = 'SDPrice';
-                    } else if (sModuleId === 'MM') {
-                        if (sCdsUpper.indexOf('ROUTE') > -1) {
-                            sSemanticObject = 'MMRoute';
-                        } else if (sCdsUpper.indexOf('SAFE') > -1 || sCdsUpper.indexOf('STOCK') > -1) {
-                            sSemanticObject = 'MMSafeStock';
-                        } else {
-                            sSemanticObject = 'MMRoute'; 
-                        }
-                    } else {
-                        MessageToast.show("Chưa hỗ trợ so sánh cho module " + sModuleId);
+                    var sSemanticObject = _resolveSemanticObject(sModuleId, sTargetCds);
+                    if (!sSemanticObject) {
+                        MessageToast.show(
+                            "Không xác định được ứng dụng so sánh cho module " + sModuleId +
+                            (sTargetCds ? " (TargetCds: " + sTargetCds + ")" : "")
+                        );
                         return;
                     }
-                    
-                    console.log("Navigating to SemanticObject:", sSemanticObject);
 
-                    // Fallback khi không có FLP shell (truy cập trực tiếp qua BSP URL)
+                    console.log("Navigating to:", sSemanticObject + "-review");
+
+                    var sBspApp = _BSP_MAP[sSemanticObject];
+                    var fnOpenBsp = function() {
+                        var sUrl = window.location.origin
+                            + "/sap/bc/ui5_ui5/sap/" + sBspApp
+                            + "?sap-client=324"
+                            + "&ReqId="  + encodeURIComponent(sReqId)
+                            + "&ConfId=" + encodeURIComponent(sConfId);
+                        window.open(sUrl, "_blank");
+                    };
+
+                    // No FLP shell — open BSP directly
                     if (!sap.ushell || !sap.ushell.Container) {
-                        var mBspApp = {
-                            "FILimit":    "zconfigfi_limit",
-                            "SDPrice":    "zconfigsd_price",
-                            "MMRoute":    "zconfigmm_route",
-                            "MMSafeStock": "zconfigmm_stock"
-                        };
-                        var sBspApp = mBspApp[sSemanticObject];
-                        if (sBspApp) {
-                            var sUrl = window.location.origin
-                                + "/sap/bc/ui5_ui5/sap/" + sBspApp
-                                + "?sap-client=324"
-                                + "&ReqId=" + encodeURIComponent(sReqId)
-                                + "&ConfId=" + encodeURIComponent(sConfId);
-                            window.open(sUrl, "_blank");
-                        } else {
-                            MessageToast.show("Không hỗ trợ module " + sModuleId);
-                        }
+                        fnOpenBsp();
                         return;
                     }
 
-                    var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-                    oCrossAppNavigator.toExternal({
-                        target: {
-                            semanticObject: sSemanticObject,
-                            action: "review"
-                        },
-                        params: {
-                            ReqId: sReqId,
-                            ConfId: sConfId
+                    // FLP present — check if AppState supports storeInnerAppStateAsync.
+                    // Older SAP systems (e.g. s40lp1.ucc.cit.tum.de) are missing this method;
+                    // toExternal() catches the error internally and navigates WITHOUT startup params,
+                    // so the compare app receives empty startupParameters and shows no records.
+                    var bAppStateOk = false;
+                    try {
+                        var oAS = sap.ushell.Container.getService("AppState");
+                        if (oAS && typeof oAS.createEmptyAppState === "function") {
+                            var oTestState = oAS.createEmptyAppState();
+                            bAppStateOk = typeof oTestState.storeInnerAppStateAsync === "function";
                         }
-                    });
-                }).catch(function(oError) {
-                    console.error("Lỗi khi navigate:", oError);
-                    MessageToast.show("Lỗi khi mở màn hình so sánh: " + oError.message);
+                    } catch (eAS) {
+                        bAppStateOk = false;
+                    }
+
+                    if (bAppStateOk) {
+                        sap.ushell.Container.getService("CrossApplicationNavigation").toExternal({
+                            target: { semanticObject: sSemanticObject, action: "review" },
+                            params: { ReqId: sReqId, ConfId: sConfId }
+                        });
+                    } else {
+                        // AppState broken — bypass toExternal() and open BSP URL directly
+                        console.warn("[CompareButton] storeInnerAppStateAsync unavailable — falling back to BSP URL");
+                        fnOpenBsp();
+                    }
+                }).catch(function(oErr) {
+                    console.error("Compare navigation error:", oErr);
+                    MessageToast.show("Lỗi khi mở màn hình so sánh: " + oErr.message);
                 });
             } catch (e) {
-                console.error("Error in onComparePress:", e);
-                MessageToast.show("JS Error: " + e.message);
+                console.error("Compare unexpected error:", e);
+                MessageToast.show("Lỗi không xác định: " + e.message);
             }
         }
     };

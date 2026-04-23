@@ -20,27 +20,36 @@ sap.ui.define([
 
                 console.log("[AuditTrail] Navigating with ReqId:", sReqId);
 
-                if (!sap.ushell || !sap.ushell.Container) {
-                    // Fallback khi không có FLP shell (truy cập trực tiếp qua BSP URL)
+                var bNavigated = false;
+                if (sap.ushell && sap.ushell.Container) {
+                    try {
+                        var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+                        if (oCrossAppNavigator) {
+                            oCrossAppNavigator.toExternal({
+                                target: {
+                                    semanticObject: "AuditTrail",
+                                    action: "display"
+                                },
+                                params: {
+                                    ReqId: sReqId
+                                },
+                                writeHistory: true
+                            });
+                            bNavigated = true;
+                        }
+                    } catch (oNavError) {
+                        console.warn("Lỗi khi navigate AuditTrail (sẽ dùng URL fallback):", oNavError);
+                    }
+                }
+
+                if (!bNavigated) {
+                    // Fallback khi không thể navigate bằng FLP tiêu chuẩn
                     var sUrl = window.location.origin
                         + "/sap/bc/ui5_ui5/sap/zaudittrail_mgr"
                         + "?sap-client=324"
                         + "&ReqId=" + encodeURIComponent(sReqId);
                     window.open(sUrl, "_blank");
-                    return;
                 }
-
-                var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-                oCrossAppNavigator.toExternal({
-                    target: {
-                        semanticObject: "AuditTrail",
-                        action: "display"
-                    },
-                    params: {
-                        ReqId: sReqId
-                    },
-                    writeHistory: true
-                });
 
             } catch (e) {
                 console.error("Error in onAuditTrailPress:", e);

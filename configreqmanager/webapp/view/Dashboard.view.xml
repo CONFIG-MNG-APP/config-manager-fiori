@@ -3,9 +3,6 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.f"
-    xmlns:viz="sap.viz.ui5.controls"
-    xmlns:vizData="sap.viz.ui5.data"
-    xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
     xmlns:micro="sap.suite.ui.microchart"
     displayBlock="true">
 
@@ -139,67 +136,85 @@
                     </HBox>
                 </VBox>
 
-                <!-- ─ Section 2: Charts ─────────────────────────────────────── -->
+                <!-- ─ Section 2: Analytics ───────────────────────────────────── -->
                 <VBox class="dashSection">
                     <Title text="Analytics" level="H4" class="dashSectionTitle"/>
                     <HBox wrap="Wrap" class="dashChartRow" alignItems="Stretch">
 
-                        <!-- Status Distribution Donut -->
+                        <!-- Status Distribution – Progress bars -->
                         <VBox class="dashChartCard" width="50%">
                             <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashChartCardHeader">
                                 <Title text="Status Distribution" level="H5"/>
                                 <ObjectStatus text="Live" state="Success" icon="sap-icon://circle-task-2"/>
                             </HBox>
-                            <viz:VizFrame
-                                id="statusDonutChart"
-                                vizType="donut"
-                                height="280px"
-                                width="100%"
-                                uiConfig="{applicationSet: 'fiori'}">
-                                <viz:dataset>
-                                    <vizData:FlattenedDataset data="{dashboard>/statusData}">
-                                        <vizData:dimensions>
-                                            <vizData:DimensionDefinition name="Status" value="{dashboard>status}"/>
-                                        </vizData:dimensions>
-                                        <vizData:measures>
-                                            <vizData:MeasureDefinition name="Count" value="{dashboard>count}"/>
-                                        </vizData:measures>
-                                    </vizData:FlattenedDataset>
-                                </viz:dataset>
-                                <viz:feeds>
-                                    <vizFeeds:FeedItem uid="color" type="Dimension" values="['Status']"/>
-                                    <vizFeeds:FeedItem uid="size" type="Measure" values="['Count']"/>
-                                </viz:feeds>
-                            </viz:VizFrame>
+                            <VBox class="dashStatusList">
+
+                                <!-- Pending -->
+                                <VBox class="dashStatusItem">
+                                    <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashStatusItemMeta">
+                                        <HBox alignItems="Center">
+                                            <VBox class="dashStatusDot dashStatusDotWarning"/>
+                                            <Text text="Pending Approval" class="dashStatusItemLabel"/>
+                                        </HBox>
+                                        <Text text="{= ${dashboard>/kpi/pending} + ' (' + ${dashboard>/kpi/pctPending} + '%)'}" class="dashStatusItemCount"/>
+                                    </HBox>
+                                    <ProgressIndicator percentValue="{dashboard>/kpi/pctPending}" state="Warning" showValue="false" class="dashStatusProgress"/>
+                                </VBox>
+
+                                <!-- Approved -->
+                                <VBox class="dashStatusItem">
+                                    <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashStatusItemMeta">
+                                        <HBox alignItems="Center">
+                                            <VBox class="dashStatusDot dashStatusDotSuccess"/>
+                                            <Text text="Approved" class="dashStatusItemLabel"/>
+                                        </HBox>
+                                        <Text text="{= ${dashboard>/kpi/approved} + ' (' + ${dashboard>/kpi/pctApproved} + '%)'}" class="dashStatusItemCount"/>
+                                    </HBox>
+                                    <ProgressIndicator percentValue="{dashboard>/kpi/pctApproved}" state="Success" showValue="false" class="dashStatusProgress"/>
+                                </VBox>
+
+                                <!-- Rejected -->
+                                <VBox class="dashStatusItem">
+                                    <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashStatusItemMeta">
+                                        <HBox alignItems="Center">
+                                            <VBox class="dashStatusDot dashStatusDotError"/>
+                                            <Text text="Rejected" class="dashStatusItemLabel"/>
+                                        </HBox>
+                                        <Text text="{= ${dashboard>/kpi/rejected} + ' (' + ${dashboard>/kpi/pctRejected} + '%)'}" class="dashStatusItemCount"/>
+                                    </HBox>
+                                    <ProgressIndicator percentValue="{dashboard>/kpi/pctRejected}" state="Error" showValue="false" class="dashStatusProgress"/>
+                                </VBox>
+
+                            </VBox>
                         </VBox>
 
-                        <!-- Module Breakdown Column Chart -->
+                        <!-- Requests by Module – Stat tiles -->
                         <VBox class="dashChartCard" width="50%">
                             <HBox justifyContent="SpaceBetween" alignItems="Center" class="dashChartCardHeader">
                                 <Title text="Requests by Module" level="H5"/>
                                 <ObjectStatus text="Live" state="Success" icon="sap-icon://circle-task-2"/>
                             </HBox>
-                            <viz:VizFrame
-                                id="moduleColumnChart"
-                                vizType="column"
-                                height="280px"
-                                width="100%"
-                                uiConfig="{applicationSet: 'fiori'}">
-                                <viz:dataset>
-                                    <vizData:FlattenedDataset data="{dashboard>/moduleData}">
-                                        <vizData:dimensions>
-                                            <vizData:DimensionDefinition name="Module" value="{dashboard>module}"/>
-                                        </vizData:dimensions>
-                                        <vizData:measures>
-                                            <vizData:MeasureDefinition name="Count" value="{dashboard>count}"/>
-                                        </vizData:measures>
-                                    </vizData:FlattenedDataset>
-                                </viz:dataset>
-                                <viz:feeds>
-                                    <vizFeeds:FeedItem uid="categoryAxis" type="Dimension" values="['Module']"/>
-                                    <vizFeeds:FeedItem uid="valueAxis" type="Measure" values="['Count']"/>
-                                </viz:feeds>
-                            </viz:VizFrame>
+                            <HBox justifyContent="SpaceAround" alignItems="Center" class="dashModuleGrid">
+
+                                <VBox alignItems="Center" class="dashModuleStat">
+                                    <Title text="{dashboard>/moduleData/0/count}" level="H1" class="dashModuleCount dashModuleCountFI"/>
+                                    <Text text="FI" class="dashModuleCode"/>
+                                    <Text text="Finance" class="dashModuleLabel"/>
+                                </VBox>
+
+                                <VBox alignItems="Center" class="dashModuleStat">
+                                    <Title text="{dashboard>/moduleData/1/count}" level="H1" class="dashModuleCount dashModuleCountSD"/>
+                                    <Text text="SD" class="dashModuleCode"/>
+                                    <Text text="Sales &amp; Dist." class="dashModuleLabel"/>
+                                </VBox>
+
+                                <VBox alignItems="Center" class="dashModuleStat">
+                                    <Title text="{dashboard>/moduleData/2/count}" level="H1" class="dashModuleCount dashModuleCountMM"/>
+                                    <Text text="MM" class="dashModuleCode"/>
+                                    <Text text="Materials" class="dashModuleLabel"/>
+                                </VBox>
+
+                            </HBox>
                         </VBox>
 
                     </HBox>
