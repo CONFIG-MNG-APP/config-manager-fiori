@@ -1,0 +1,5 @@
+[
+    { "key": "FI", "text": "Finance (FI)" },
+    { "key": "SD", "text": "Sales & Distribution (SD)" },
+    { "key": "MM", "text": "Materials Management (MM)" }
+]

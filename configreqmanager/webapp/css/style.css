@@ -7,33 +7,59 @@
    Override here to retheme the entire app.
    ─────────────────────────────────────────────────────────────────── */
 :root {
-    --cr-brand:         #0057b8;
-    --cr-brand-light:   #0a6ed1;
-    --cr-brand-bright:  #1a8fff;
-    --cr-success:       #2b9c4e;
-    --cr-warning:       #e76500;
-    --cr-error:         #bb0000;
-    --cr-neutral:       #475e75;
-    --cr-info:          #0070f2;
+    --cr-brand:         #6366f1;
+    --cr-brand-light:   #818cf8;
+    --cr-brand-bright:  #4f46e5;
+    --cr-success:       #10b981;
+    --cr-warning:       #f59e0b;
+    --cr-error:         #ef4444;
+    --cr-neutral:       #64748b;
+    --cr-info:          #3b82f6;
 
-    --cr-bg:            #f4f6fb;
-    --cr-card-bg:       #ffffff;
-    --cr-border:        #e0e4ea;
-    --cr-border-light:  #f0f2f5;
+    --cr-bg:            #f8fafc;
+    --cr-card-bg:       rgba(255, 255, 255, 0.65);
+    --cr-glass-bg:      rgba(255, 255, 255, 0.75);
+    --cr-glass-border:  rgba(255, 255, 255, 0.5);
+    --cr-border:        #e2e8f0;
+    --cr-border-light:  #f1f5f9;
 
-    --cr-text-primary:  #32363a;
-    --cr-text-muted:    #6a7381;
+    --cr-text-primary:  #0f172a;
+    --cr-text-muted:    #475569;
 
-    --cr-shadow-sm:     0 2px 12px rgba(0, 0, 0, 0.08);
-    --cr-shadow-md:     0 6px 22px rgba(0, 0, 0, 0.14);
-    --cr-shadow-brand:  0 4px 18px rgba(0, 87, 184, 0.22);
+    --cr-shadow-sm:     0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --cr-shadow-md:     0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    --cr-shadow-lg:     0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --cr-shadow-brand:  0 10px 25px -5px rgba(99, 102, 241, 0.4);
 
-    --cr-radius-sm:     0.5rem;
-    --cr-radius-md:     1rem;
-    --cr-radius-pill:   2rem;
+    --cr-radius-sm:     0.75rem;
+    --cr-radius-md:     1.25rem;
+    --cr-radius-lg:     1.5rem;
+    --cr-radius-pill:   9999px;
 
-    --cr-transition:    0.2s ease;
+    --cr-transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ── Global App Background (Gradient) ─────────────────────────────── */
+.sapMShellCentralBox, .sapFDynamicPage {
+    background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%) !important;
+}
+
+/* ── Glassmorphism Utility ───────────────────────────────────────── */
+.cr-glass {
+    background: var(--cr-glass-bg) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--cr-glass-border) !important;
+    box-shadow: var(--cr-shadow-sm);
+}
+
+/* Apply Glass to standard Fiori Toolbars & Headers */
+.sapFDynamicPageHeader, .sapFDynamicPageTitle, .sapMListTblHeader {
+    background: var(--cr-glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
 
 /* ── Skeleton shimmer loader ─────────────────────────────────────────
    Shows while KPI data is fetching. Uses a sliding gradient to
@@ -143,10 +169,16 @@
 
 
 
-/* Row hover highlight */
+/* Row hover highlight with micro-animation */
+.sapMListTbl .sapMLIB {
+    transition: transform var(--cr-transition), box-shadow var(--cr-transition), background-color var(--cr-transition) !important;
+}
 .sapMListTbl .sapMLIB:hover {
-    background-color: #f0f4f9 !important;
-    transition: background-color 0.15s ease;
+    background-color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: var(--cr-shadow-md);
+    z-index: 10;
+    position: relative;
 }
 
 /* ── Table column headers ─────────────────────────────────────────── */
@@ -162,13 +194,28 @@
     font-weight: 700;
 }
 
-/* ── Compare button: slim inside the table cell ──────────────────── */
+/* ── Compare button: Premium style inside the table cell ─────────── */
 .sapMBtn.configreqCompareBtn {
     min-width: 0;
+    transition: all var(--cr-transition);
 }
 .sapMBtn.configreqCompareBtn .sapMBtnInner {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    background: linear-gradient(135deg, var(--cr-brand), var(--cr-brand-light)) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--cr-radius-pill) !important;
+    box-shadow: var(--cr-shadow-brand) !important;
+}
+.sapMBtn.configreqCompareBtn:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+.sapMBtn.configreqCompareBtn:hover .sapMBtnInner {
+    background: linear-gradient(135deg, var(--cr-brand-light), var(--cr-brand-bright)) !important;
+}
+.sapMBtn.configreqCompareBtn .sapUiIcon {
+    color: #ffffff !important;
 }
 
 /* ── Object Page: status text more prominent ─────────────────────── */
@@ -449,11 +496,11 @@
     background-color: var(--cr-bg);
 }
 
-/* Header gradient bar */
+/* Header gradient bar - vibrant modern gradient */
 .dashPage .sapFDynamicPageTitle {
-    background: linear-gradient(135deg, var(--cr-brand) 0%, var(--cr-brand-light) 60%, var(--cr-brand-bright) 100%);
-    padding: 1.25rem 2rem;
-    border-radius: 0 0 1rem 1rem;
+    background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%) !important;
+    padding: 1.5rem 2.5rem;
+    border-radius: 0 0 1.5rem 1.5rem;
     box-shadow: var(--cr-shadow-brand);
 }
 
@@ -477,6 +524,9 @@
 .dashPage .sapFDynamicPageTitle .sapMBtn .sapMBtnInner {
     color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.45) !important;
+}
+.dashPage .sapFDynamicPageTitle .sapMBtn .sapUiIcon {
+    color: #ffffff !important;
 }
 .dashPage .sapFDynamicPageTitle .sapMBtn:hover .sapMBtnInner {
     background-color: rgba(255, 255, 255, 0.15) !important;
@@ -514,13 +564,15 @@
     flex-wrap: wrap;
 }
 
-/* Base tile: white card, shadow, rounded corners */
+/* Base tile: glassmorphism, shadow, rounded corners */
 .dashKpiTile.sapMGT {
-    border-radius: 1rem !important;
-    border: none !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
-    transition: box-shadow 0.2s ease, transform 0.18s ease !important;
-    background-color: #ffffff !important;
+    border-radius: var(--cr-radius-md) !important;
+    border: 1px solid var(--cr-glass-border) !important;
+    box-shadow: var(--cr-shadow-sm) !important;
+    transition: all var(--cr-transition) !important;
+    background: var(--cr-glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     min-width: 13rem;
     flex: 1 1 13rem;
 }
@@ -565,16 +617,19 @@
     flex-wrap: wrap;
 }
 
-/* Chart card container */
+/* Chart card container - Glassmorphism */
 .dashChartCard {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    background: var(--cr-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--cr-glass-border);
+    border-radius: var(--cr-radius-lg);
+    box-shadow: var(--cr-shadow-md);
     padding: 1.25rem 1.5rem;
     flex: 1 1 calc(50% - 1.25rem);
     min-width: 18rem;
     box-sizing: border-box;
-    transition: box-shadow 0.2s ease;
+    transition: all var(--cr-transition);
 }
 
 .dashChartCard:hover {
@@ -702,11 +757,14 @@
    ══════════════════════════════════════════════════════════════════════ */
 
 .dashRecentSection {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    padding: 1.25rem 1.5rem;
-    transition: box-shadow 0.2s ease;
+    background: var(--cr-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--cr-glass-border);
+    border-radius: var(--cr-radius-lg);
+    box-shadow: var(--cr-shadow-md);
+    padding: 1.5rem 2rem;
+    transition: all var(--cr-transition);
 }
 
 .dashRecentSection:hover {
@@ -772,4 +830,8 @@
     }
 }
 
+
+
+/* Fix Table Empty Space */
+.sapMListTbl { table-layout: auto !important; width: 100% !important; }
 

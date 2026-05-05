@@ -1,6 +1,7 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt">
-    <tnt:InfoLabel
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+    <ObjectStatus
         text="{ModuleId}"
-        renderMode="Narrow"
-        colorScheme="{= ${path: 'ModuleId', targetType: 'any'} === 'FI' ? 6 : ${path: 'ModuleId', targetType: 'any'} === 'MM' ? 8 : ${path: 'ModuleId', targetType: 'any'} === 'SD' ? 7 : 10 }"/>
+        state="{= ${path: 'ModuleId', targetType: 'any'} === 'FI' ? 'Information' : ${path: 'ModuleId', targetType: 'any'} === 'MM' ? 'Warning' : ${path: 'ModuleId', targetType: 'any'} === 'SD' ? 'Success' : 'None' }"
+        class="cr-badge cr-badge-module"
+        inverted="true" />
 </core:FragmentDefinition>

@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/fe/core/controllerextensions/ControllerExtension",
+    "sap/ui/core/mvc/ControllerExtension",
     "sap/ui/mdc/condition/Condition"
 ], function (ControllerExtension, Condition) {
     "use strict";

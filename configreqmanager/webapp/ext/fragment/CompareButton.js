@@ -77,35 +77,14 @@ sap.ui.define([
                         window.open(sUrl, "_blank");
                     };
 
-                    // No FLP shell — open BSP directly
-                    if (!sap.ushell || !sap.ushell.Container) {
-                        fnOpenBsp();
-                        return;
-                    }
-
-                    // FLP present — check if AppState supports storeInnerAppStateAsync.
-                    // Older SAP systems (e.g. s40lp1.ucc.cit.tum.de) are missing this method;
-                    // toExternal() catches the error internally and navigates WITHOUT startup params,
-                    // so the compare app receives empty startupParameters and shows no records.
-                    var bAppStateOk = false;
-                    try {
-                        var oAS = sap.ushell.Container.getService("AppState");
-                        if (oAS && typeof oAS.createEmptyAppState === "function") {
-                            var oTestState = oAS.createEmptyAppState();
-                            bAppStateOk = typeof oTestState.storeInnerAppStateAsync === "function";
-                        }
-                    } catch (eAS) {
-                        bAppStateOk = false;
-                    }
-
-                    if (bAppStateOk) {
-                        sap.ushell.Container.getService("CrossApplicationNavigation").toExternal({
+                    var oCrossAppNav = sap.ushell && sap.ushell.Container && sap.ushell.Container.getService("CrossApplicationNavigation");
+                    if (oCrossAppNav) {
+                        oCrossAppNav.toExternal({
                             target: { semanticObject: sSemanticObject, action: "review" },
                             params: { ReqId: sReqId, ConfId: sConfId }
                         });
                     } else {
-                        // AppState broken — bypass toExternal() and open BSP URL directly
-                        console.warn("[CompareButton] storeInnerAppStateAsync unavailable — falling back to BSP URL");
+                        // Môi trường không có FLP (ví dụ chạy local hoặc test độc lập)
                         fnOpenBsp();
                     }
                 }).catch(function(oErr) {

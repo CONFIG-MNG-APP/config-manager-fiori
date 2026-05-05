@@ -1,7 +1,8 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt">
-    <tnt:InfoLabel
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+    <ObjectStatus
         text="{Status}"
-        renderMode="Narrow"
-        colorScheme="{= ${path: 'Status', targetType: 'any'} === 'APPROVED' ? 5 : ${path: 'Status', targetType: 'any'} === 'REJECTED' ? 1 : ${path: 'Status', targetType: 'any'} === 'SUBMITTED' ? 8 : 10 }"
-        icon="{= ${path: 'Status', targetType: 'any'} === 'APPROVED' ? 'sap-icon://sys-enter-2' : ${path: 'Status', targetType: 'any'} === 'REJECTED' ? 'sap-icon://error' : ${path: 'Status', targetType: 'any'} === 'SUBMITTED' ? 'sap-icon://pending' : 'sap-icon://edit' }"/>
+        icon="{= ${path: 'Status', targetType: 'any'} === 'APPROVED' ? 'sap-icon://sys-enter-2' : ${path: 'Status', targetType: 'any'} === 'REJECTED' ? 'sap-icon://error' : ${path: 'Status', targetType: 'any'} === 'SUBMITTED' ? 'sap-icon://pending' : 'sap-icon://edit' }"
+        state="{= ${path: 'Status', targetType: 'any'} === 'APPROVED' ? 'Success' : ${path: 'Status', targetType: 'any'} === 'REJECTED' ? 'Error' : ${path: 'Status', targetType: 'any'} === 'SUBMITTED' ? 'Warning' : 'None' }"
+        class="cr-badge cr-badge-status"
+        inverted="true" />
 </core:FragmentDefinition>

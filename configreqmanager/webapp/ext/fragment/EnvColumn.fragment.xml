@@ -1,6 +1,7 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt">
-    <tnt:InfoLabel
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+    <ObjectStatus
         text="{EnvId}"
-        renderMode="Narrow"
-        colorScheme="{= ${path: 'EnvId', targetType: 'any'} === 'PRD' ? 1 : ${path: 'EnvId', targetType: 'any'} === 'QAS' ? 3 : 4 }"/>
+        state="{= ${path: 'EnvId', targetType: 'any'} === 'PRD' ? 'Error' : ${path: 'EnvId', targetType: 'any'} === 'QAS' ? 'Warning' : 'Success' }"
+        class="cr-badge cr-badge-env"
+        inverted="true" />
 </core:FragmentDefinition>

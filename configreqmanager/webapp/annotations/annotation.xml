@@ -23,13 +23,6 @@
 
                 <!-- ═══ Quick Filter Tab Variants ═══════════════════════════════════ -->
 
-                <Annotation Term="UI.SelectionVariant" Qualifier="All">
-                    <Record Type="UI.SelectionVariantType">
-                        <PropertyValue Property="ID" String="All"/>
-                        <PropertyValue Property="Text" String="All Requests"/>
-                        <PropertyValue Property="SelectOptions"><Collection/></PropertyValue>
-                    </Record>
-                </Annotation>
 
                 <Annotation Term="UI.SelectionVariant" Qualifier="Submitted">
                     <Record Type="UI.SelectionVariantType">
@@ -100,35 +93,12 @@
                     </Record>
                 </Annotation>
 
-                <Annotation Term="UI.SelectionVariant" Qualifier="Draft">
-                    <Record Type="UI.SelectionVariantType">
-                        <PropertyValue Property="ID" String="Draft"/>
-                        <PropertyValue Property="Text" String="My Drafts"/>
-                        <PropertyValue Property="SelectOptions">
-                            <Collection>
-                                <Record Type="UI.SelectOptionType">
-                                    <PropertyValue Property="PropertyName" PropertyPath="IsActiveEntity"/>
-                                    <PropertyValue Property="Ranges">
-                                        <Collection>
-                                            <Record Type="UI.SelectionRangeType">
-                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
-                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
-                                                <PropertyValue Property="Low" Bool="false"/>
-                                            </Record>
-                                        </Collection>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
 
                 <!-- ═══ Filter Bar Fields ════════════════════════════════════════════ -->
                 <!-- Status first — manager's primary filter; Module/Env next for scope -->
 
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
-                        <PropertyPath>Status</PropertyPath>
                         <PropertyPath>ModuleId</PropertyPath>
                         <PropertyPath>EnvId</PropertyPath>
                         <PropertyPath>ReqTitle</PropertyPath>
@@ -305,10 +275,6 @@
                                     <PropertyValue Property="Label" String="Configuration Name"/>
                                     <PropertyValue Property="Value" Path="ConfName"/>
                                 </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Label" String="{@i18n>fieldTargetCds}"/>
-                                    <PropertyValue Property="Value" Path="TargetCds"/>
-                                </Record>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -341,6 +307,10 @@
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Label" String="Rejected At"/>
                                     <PropertyValue Property="Value" Path="RejectedAt"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="{@i18n>fieldRejectionReason}"/>
+                                    <PropertyValue Property="Value" Path="RejectReason"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -397,19 +367,9 @@
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Action"/>
-                            <PropertyValue Property="Value" Path="Action"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Target Environment"/>
                             <PropertyValue Property="Value" Path="TargetEnvId"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Version"/>
-                            <PropertyValue Property="Value" Path="VersionNo"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Notes"/>
@@ -424,6 +384,19 @@
 
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/ReqTitle">
                 <Annotation Term="Common.Label" String="{@i18n>colRequestTitle}"/>
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="CollectionPath" String="ZC_CONF_REQ_H"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="ReqTitle"/>
+                                    <PropertyValue Property="ValueListProperty" String="ReqTitle"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
             </Annotations>
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/ModuleId">
                 <Annotation Term="Common.Label" String="{@i18n>colModule}"/>
@@ -436,6 +409,19 @@
             </Annotations>
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/CreatedBy">
                 <Annotation Term="Common.Label" String="{@i18n>colRequestedBy}"/>
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="CollectionPath" String="ZC_CONF_REQ_H"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CreatedBy"/>
+                                    <PropertyValue Property="ValueListProperty" String="CreatedBy"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
             </Annotations>
             <Annotations Target="com.sap.gateway.srvd.zsd_conf_req.v0001.ZC_CONF_REQ_HType/CreatedAt">
                 <Annotation Term="Common.Label" String="{@i18n>colCreatedAt}"/>

@@ -49,19 +49,19 @@
                         <GenericTile
                             class="dashKpiTile dashKpiPending sapUiTinyMarginBeginEnd"
                             header="Pending Approval"
-                            subheader="{= ${dashboard>/kpi/pending} + ' awaiting review'}"
+                            subheader="Awaiting review"
                             sizeBehavior="Responsive"
                             frameType="TwoByOne"
                             press="onKpiPress">
                             <tileContent>
-                                <TileContent footer="% of total">
+                                <TileContent>
                                     <content>
-                                        <micro:RadialMicroChart
-                                            id="kpiPendingRadial"
-                                            size="Auto"
-                                            fraction="{dashboard>/kpi/pending}"
-                                            total="{dashboard>/kpi/total}"
-                                            valueColor="Critical"/>
+                                        <NumericContent
+                                            value="{dashboard>/kpi/pending}"
+                                            scale=""
+                                            valueColor="Critical"
+                                            icon="sap-icon://history"
+                                            withMargin="false"/>
                                     </content>
                                 </TileContent>
                             </tileContent>
@@ -89,45 +89,45 @@
                             </tileContent>
                         </GenericTile>
 
-                        <!-- Approved: RadialMicroChart shows % of total -->
+                        <!-- Approved: Numeric display -->
                         <GenericTile
                             class="dashKpiTile dashKpiApproved sapUiTinyMarginBeginEnd"
                             header="Approved"
-                            subheader="{= ${dashboard>/kpi/approved} + ' requests'}"
+                            subheader="Requests"
                             sizeBehavior="Responsive"
                             frameType="TwoByOne"
                             press="onKpiPress">
                             <tileContent>
-                                <TileContent footer="% of total">
+                                <TileContent>
                                     <content>
-                                        <micro:RadialMicroChart
-                                            id="kpiApprovedRadial"
-                                            size="Auto"
-                                            fraction="{dashboard>/kpi/approved}"
-                                            total="{dashboard>/kpi/total}"
-                                            valueColor="Good"/>
+                                        <NumericContent
+                                            value="{dashboard>/kpi/approved}"
+                                            scale=""
+                                            valueColor="Good"
+                                            icon="sap-icon://sys-enter-2"
+                                            withMargin="false"/>
                                     </content>
                                 </TileContent>
                             </tileContent>
                         </GenericTile>
 
-                        <!-- Rejected: RadialMicroChart shows % of total -->
+                        <!-- Rejected: Numeric display -->
                         <GenericTile
                             class="dashKpiTile dashKpiRejected sapUiTinyMarginBeginEnd"
                             header="Rejected"
-                            subheader="{= ${dashboard>/kpi/rejected} + ' requests'}"
+                            subheader="Requests"
                             sizeBehavior="Responsive"
                             frameType="TwoByOne"
                             press="onKpiPress">
                             <tileContent>
-                                <TileContent footer="% of total">
+                                <TileContent>
                                     <content>
-                                        <micro:RadialMicroChart
-                                            id="kpiRejectedRadial"
-                                            size="Auto"
-                                            fraction="{dashboard>/kpi/rejected}"
-                                            total="{dashboard>/kpi/total}"
-                                            valueColor="Error"/>
+                                        <NumericContent
+                                            value="{dashboard>/kpi/rejected}"
+                                            scale=""
+                                            valueColor="Error"
+                                            icon="sap-icon://sys-cancel-2"
+                                            withMargin="false"/>
                                     </content>
                                 </TileContent>
                             </tileContent>

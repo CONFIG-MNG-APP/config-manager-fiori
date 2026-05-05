@@ -37,10 +37,6 @@
     },
     "crossNavigation": {
       "outbounds": {
-        "AuditTrail-display": {
-          "semanticObject": "AuditTrail",
-          "action": "display"
-        },
         "FILimit-review": {
           "semanticObject": "FILimit",
           "action": "review"
@@ -148,6 +144,10 @@
       "@i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "uri": "i18n/i18n.properties"
+      },
+      "moduleVH": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "localService/ModuleVH.json"
       }
     },
     "resources": {
@@ -212,20 +212,12 @@
                     "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Submitted"
                   },
                   {
-                    "key": "All",
-                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#All"
-                  },
-                  {
                     "key": "Approved",
                     "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Approved"
                   },
                   {
                     "key": "Rejected",
                     "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Rejected"
-                  },
-                  {
-                    "key": "Draft",
-                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#Draft"
                   }
                 ]
               },
@@ -237,15 +229,13 @@
                     },
                     "ModuleId": {
                       "label": "{{colModule}}",
+                      "template": "zcapstone.configreqmanager.ext.fragment.ModuleFilter",
                       "settings": {
                         "defaultValues": []
                       }
                     },
                     "EnvId": {
                       "label": "{{colEnvironment}}"
-                    },
-                    "Status": {
-                      "label": "{{colStatus}}"
                     },
                     "CreatedBy": {
                       "label": "{{colRequestedBy}}"
@@ -256,9 +246,13 @@
                   "tableSettings": {
                     "type": "ResponsiveTable",
                     "selectionMode": "Multi",
+                    "enableAutoColumnWidth": false,
                     "requestAtLeast": ["StatusCriticality", "ModuleId"]
                   },
                   "columns": {
+                    "DataField::ReqTitle": {
+                      "width": "auto"
+                    },
                     "CustomModuleColumn": {
                       "header": "{{colModule}}",
                       "width": "8rem",
@@ -331,18 +325,6 @@
                 }
               },
               "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.Identification": {
-                  "actions": {
-                    "AuditTrailButton": {
-                      "press": "zcapstone.configreqmanager.ext.fragment.AuditTrailButton.onAuditTrailPress",
-                      "text": "Audit Trail",
-                      "icon": "sap-icon://history",
-                      "visible": true,
-                      "enabled": true,
-                      "requiresSelection": false
-                    }
-                  }
-                },
                 "_Items/@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "ResponsiveTable",
@@ -351,7 +333,7 @@
                   "columns": {
                     "CompareButton": {
                       "header": "Compare",
-                      "width": "9rem",
+                      "width": "7rem",
                       "properties": ["ReqId", "ConfId"],
                       "position": {
                         "placement": "End"
@@ -384,11 +366,7 @@
   },
   "sap.fe": {
     "app": {
-      "enableLazyLoading": true,
-      "flexibleColumnLayout": {
-        "defaultTwoColumnLayoutType": "TwoColumnsMidExpanded",
-        "defaultThreeColumnLayoutType": "ThreeColumnsEndExpanded"
-      }
+      "enableLazyLoading": true
     }
   }
 }

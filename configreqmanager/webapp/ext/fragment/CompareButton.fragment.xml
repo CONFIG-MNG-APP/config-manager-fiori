@@ -2,9 +2,8 @@
     <Button
         id="Button"
         core:require="{ handler: 'zcapstone/configreqmanager/ext/fragment/CompareButton'}"
-        text="Compare"
-        icon="sap-icon://compare"
+        text="Preview"
+        icon="sap-icon://display"
         type="Ghost"
-        class="configreqCompareBtn"
         press="handler.onComparePress" />
 </core:FragmentDefinition>
